@@ -1,5 +1,5 @@
-import { events, stateKeys } from '../constants/example';
-import initialState from '../states/example';
+import { events, stateKeys } from './constants';
+import initialState from './state';
 
 function handleExampleEvent(state) {
   return state
@@ -10,7 +10,7 @@ const handlers = new Map([
   [events.upCount, handleExampleEvent],
 ]);
 
-const Reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => {
   const handleAction = handlers.get(action.type);
   if (typeof handleAction === 'function') {
     return handleAction(state, action);
@@ -18,4 +18,4 @@ const Reducer = (state = initialState, action) => {
   return state;
 };
 
-export default Reducer;
+export default reducer;

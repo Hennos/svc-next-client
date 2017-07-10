@@ -1,11 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { stateKeys } from '../../constants/example';
-import { startTimer } from '../../actions/example';
-import Test from '../../components/Test/index';
+import { connect } from 'react-redux';
+import { stateKeys } from './constants';
+import Test from './components/Test';
+import { startTimer } from './actions';
 
-function TestView({ count, onTestButtonClick }) {
+function Example({ count, onTestButtonClick }) {
   return (
     <div className="test-view">
       <Test count={count} onClick={onTestButtonClick} />
@@ -13,7 +13,7 @@ function TestView({ count, onTestButtonClick }) {
   );
 }
 
-TestView.propTypes = {
+Example.propTypes = {
   count: PropTypes.number.isRequired,
   onTestButtonClick: PropTypes.func.isRequired,
 };
@@ -26,4 +26,4 @@ const mapStateToProps = state => ({
   count: state.example.get(stateKeys.count),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestView);
+export default connect(mapStateToProps, mapDispatchToProps)(Example);

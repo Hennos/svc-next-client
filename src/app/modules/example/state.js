@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import { stateKeys } from '../constants/example';
+import { stateKeys } from './constants';
 
 const state = Immutable.Map([
   [stateKeys.count, 0],

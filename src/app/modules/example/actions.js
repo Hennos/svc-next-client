@@ -1,4 +1,4 @@
-import { events } from '../constants/example';
+import { events } from './constants';
 
 export const startTimer = () => ({ type: events.startTimer });
 

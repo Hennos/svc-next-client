@@ -22,6 +22,7 @@ const mapDispatchToProps = dispatch => ({
   onTestButtonClick: () => dispatch(startTimer()),
 });
 
+// todo: косяк, жестко защита структура хранилища, зависимость от внешнего устройства.
 const mapStateToProps = state => ({
   count: state.example.get(stateKeys.count),
 });

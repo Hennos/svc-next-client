@@ -1,7 +1,7 @@
 import example from './example';
+import dataChannel from './dataChannel';
 
-const modules = {
+export default {
   example,
+  dataChannel,
 };
-
-export default modules;

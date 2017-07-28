@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
-import exampleModule from './modules/example';
+import modules from './modules';
 
 const Reducers = combineReducers({
-  example: exampleModule.reducer,
+  example: modules.example.reducer,
+  dataChannel: modules.dataChannel.reducer,
 });
 
 export default Reducers;

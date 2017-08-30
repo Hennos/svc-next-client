@@ -2,8 +2,8 @@ import { takeEvery } from 'redux-saga/effects';
 import { events } from '../constants';
 import createConnection from './createConnection';
 
-function* narrator() {
+function* saga() {
   yield takeEvery(events.createConnection, createConnection);
 }
 
-export default narrator;
+export default saga;

@@ -2,8 +2,9 @@ import { takeEvery } from 'redux-saga/effects';
 import { events } from '../constants';
 import startTimerLoop from './startTimerLoop';
 
-function* narrator() {
+function* saga() {
   yield takeEvery(events.startTimer, startTimerLoop);
 }
 
-export default narrator;
+export default saga;
+

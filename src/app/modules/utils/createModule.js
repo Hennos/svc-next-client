@@ -1,13 +1,12 @@
-function createModule(component, reducer, narrator, ...utils) {
-  if (!component) {
-    throw new Error('createModule: you must pass a component');
-  }
-  return {
-    component,
-    reducer,
-    narrator,
-    utils,
-  };
+// todo: написать тесты к функционалу классов
+import ModuleConfigurator from './ModuleConfigurator';
+
+function getReducerByModuleBody({ reducer }) {
+  return reducer;
 }
 
-export default createModule;
+function createModule() {
+
+}
+
+export default ModuleConfigurator.create();

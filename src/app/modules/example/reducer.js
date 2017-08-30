@@ -6,16 +6,11 @@ function handleExampleEvent(state) {
     .set(stateKeys.count, state.get(stateKeys.count) + 1);
 }
 
-const handlers = new Map([
+const workers = [
   [events.upCount, handleExampleEvent],
-]);
+];
 
-const reducer = (state = initialState, action) => {
-  const handleAction = handlers.get(action.type);
-  if (typeof handleAction === 'function') {
-    return handleAction(state, action);
-  }
-  return state;
+export default {
+  workers,
+  initialState,
 };
-
-export default reducer;

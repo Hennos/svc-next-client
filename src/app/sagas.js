@@ -3,8 +3,8 @@ import modules from './modules';
 
 function* rootSaga() {
   yield all([
-    modules.example.narrator(),
-    modules.dataChannel.narrator(),
+    modules.example.saga(),
+    modules.dataChannel.saga(),
   ]);
 }
 

@@ -1,13 +1,13 @@
 import createModule from '../utils/createModule';
 import component from './component';
 import reducer from './reducer';
-import narrator from './stories';
+import saga from './stories';
 import { events, stateKeys } from './constants';
 
 export default createModule(
   component,
   reducer,
-  narrator,
+  saga,
   events,
   stateKeys,
 );

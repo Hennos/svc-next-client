@@ -22,7 +22,7 @@ describe('FragmentProducerReducer', () => {
 
   const invalidWorkers = {
     [upCounterAction.type]: upCounterInState,
-  }
+  };
   const invalidBody = {
     workers: invalidWorkers,
   };

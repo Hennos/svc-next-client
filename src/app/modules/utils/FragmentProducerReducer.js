@@ -10,7 +10,12 @@ export default class FragmentProducerReducer extends FragmentProducer {
     super('reducer');
   }
 
-  getProduce({ workers = [], initialState = {} }) {
+  getProduce(body = {}) {
+    if (typeof body !== 'object') {
+      throw new TypeError('FragmentProducerReducer => getProduce(body): body must be object');
+    }
+
+    const { workers = [], initialState = {} } = body;
     return () => {
       try {
         const workersMap = WorkersMap.create(workers);
@@ -22,7 +27,7 @@ export default class FragmentProducerReducer extends FragmentProducer {
           return state;
         };
       } catch (error) {
-        throw new TypeError(`FragmentProducerReducer: workers in body => ${error.message}`);
+        throw new TypeError(`FragmentProducerReducer => getProduce: workers in body => ${error.message}`);
       }
     };
   }

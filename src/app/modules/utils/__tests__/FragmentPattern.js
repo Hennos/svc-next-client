@@ -10,7 +10,7 @@ describe('FragmentPattern', () => {
   describe('static create(type, produce)', () => {
     it('return instance of FragmentPattern', () => {
       const fragmentPattern = FragmentPattern.create(correctType, correctProduce);
-    
+
       expect(fragmentPattern).toBeInstanceOf(FragmentPattern);
     });
     it('should throw TypeError if type argument is not a string', () => {
@@ -25,13 +25,14 @@ describe('FragmentPattern', () => {
     });
   });
 
-  describe('calculate()', () => {
-    it('should return pare of type and produced fragment body', () => {
+  describe('get()', () => {
+    it('should return pattern for creating pare of type and produced fragment body', () => {
       const fragmentPattern = FragmentPattern.create(correctType, correctProduce);
 
-      const gettingPare = fragmentPattern.calculate();
+      const gettingPattern = fragmentPattern.get();
+      const creatingPare = gettingPattern();
 
-      expect(gettingPare).toEqual(formedPare);
+      expect(creatingPare).toEqual(formedPare);
     });
   });
 });

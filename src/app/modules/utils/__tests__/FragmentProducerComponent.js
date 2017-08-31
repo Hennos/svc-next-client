@@ -2,7 +2,6 @@ import FragmentProducerComponent from '../FragmentProducerComponent';
 import FragmentProducer from '../FragmentProducer';
 
 describe('FragmentProducerComponent', () => {
-  const type = 'component';
   const body = {};
 
   describe('static create()', () => {
@@ -18,16 +17,13 @@ describe('FragmentProducerComponent', () => {
     });
   });
 
-  describe('getType()', () => {
-    it(`should return ${type} type of producer`, () => {
-      const fragmentProducer = FragmentProducerComponent.create();
+  describe('getProduce(body)', () => {
+    it('', () => {
 
-      const gettingType = fragmentProducer.getType();
+    });
+    it('should return valid react component', () => {
 
-      expect(gettingType).toBe(type);
     });
   });
-
-  describe('getProduce(body)', () => {});
 });
 

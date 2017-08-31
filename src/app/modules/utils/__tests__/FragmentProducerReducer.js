@@ -2,8 +2,6 @@ import FragmentProducerReducer from '../FragmentProducerReducer';
 import FragmentProducer from '../FragmentProducer';
 
 describe('FragmentProducerReducer', () => {
-  const type = 'reducer';
-
   const upCounterAction = {
     type: 'UP_COUNTER',
   };
@@ -37,16 +35,6 @@ describe('FragmentProducerReducer', () => {
       const fragmentProducer = FragmentProducerReducer.create();
 
       expect(fragmentProducer).toBeInstanceOf(FragmentProducerReducer);
-    });
-  });
-
-  describe('getType()', () => {
-    it(`should return ${type} type of producer`, () => {
-      const fragmentProducer = FragmentProducerReducer.create();
-
-      const gettingType = fragmentProducer.getType();
-
-      expect(gettingType).toBe(type);
     });
   });
 

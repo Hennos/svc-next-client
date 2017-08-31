@@ -1,13 +1,16 @@
 import FragmentConfiguration from './FragmentConfiguration';
 import createFragmentProducer from './createFragmentProducer';
+import FragmentPattern from './FragmentPattern';
 import ModuleFragment from './ModuleFragment';
 
 export default function createModuleFragment(config) {
   try {
     const fragmentConfig = FragmentConfiguration.create(config);
-    const fragmentProducer = createFragmentProducer(fragmentConfig.getType());
-    const producePattern = fragmentProducer.getProduce(fragmentConfig.getBody());
-    return ModuleFragment.create(producePattern);
+    const fragmentType = fragmentConfig.getType();
+    const fragmentProducer = createFragmentProducer(fragmentType);
+    const produceFragmentBody = fragmentProducer.getProduce(fragmentConfig.getBody());
+    const fragmentPattern = FragmentPattern.create(fragmentType, produceFragmentBody);
+    return ModuleFragment.create(fragmentPattern.get());
   } catch (error) {
     throw new TypeError(`createModuleFragment(config) => ${error.message}`);
   }

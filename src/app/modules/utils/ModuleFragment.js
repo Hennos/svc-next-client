@@ -1,13 +1,13 @@
 export default class ModuleFragment {
-  constructor(producePattern) {
-    if (typeof producePattern !== 'function') {
-      throw new TypeError('ModuleFragment: producePattern must be function');
+  constructor(pattern) {
+    if (typeof pattern !== 'function') {
+      throw new TypeError('ModuleFragment => constructor(): getting pattern must be function');
     }
 
-    this.produce = () => producePattern();
+    this.get = () => pattern();
   }
 
-  static create(producePattern) {
-    return new ModuleFragment(producePattern);
+  static create(pattern) {
+    return new ModuleFragment(pattern);
   }
 }

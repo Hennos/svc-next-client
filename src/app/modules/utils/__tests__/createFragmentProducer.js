@@ -15,11 +15,4 @@ describe('createFragmentProducer(type)', () => {
 
     expect(createProducerCaller).toThrow(TypeError);
   });
-  it('returning fragmentProducer should has a type, getting by type parameter', () => {
-    const fragmentProducer = createFragmentProducer(validType);
-
-    const gettingType = fragmentProducer.getType();
-
-    expect(gettingType).toBe(validType);
-  });
 });

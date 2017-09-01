@@ -1,3 +1,4 @@
+import { createStore } from 'redux';
 import FragmentProducerReducer from '../FragmentProducerReducer';
 import FragmentProducer from '../FragmentProducer';
 
@@ -9,6 +10,10 @@ describe('FragmentProducerReducer', () => {
     counter: prevState.counter + 1,
   });
 
+  const initialState = {
+    counter: 0,
+  }
+
   const emptyBody = {};
 
   const correctWorkers = [
@@ -16,6 +21,7 @@ describe('FragmentProducerReducer', () => {
   ];
   const correctBody = {
     workers: correctWorkers,
+    initialState,
   };
 
   const invalidWorkers = {
@@ -23,6 +29,7 @@ describe('FragmentProducerReducer', () => {
   };
   const invalidBody = {
     workers: invalidWorkers,
+    initialState,
   };
 
   describe('static create()', () => {
@@ -54,13 +61,23 @@ describe('FragmentProducerReducer', () => {
 
       expect(getProduceCaller).toThrow(TypeError);
     });
-    it('returning produce() should create reducer', () => {
+    it('returning produce() should create reducer()', () => {
       const fragmentProducer = FragmentProducerReducer.create();
 
       const gettingProduce = fragmentProducer.getProduce(correctBody);
       const producingReducer = gettingProduce();
 
       expect(producingReducer({ counter: 0 }, upCounterAction)).toEqual({ counter: 1 });
+    });
+    it('redux should create store with state equals initialState in body if get reducer, returning by produce()', () => {
+      const fragmentProducer = FragmentProducerReducer.create();
+
+      const gettingProduce = fragmentProducer.getProduce(correctBody);
+      const producingReducer = gettingProduce();
+      const creatingStore = createStore(producingReducer);
+      const storeState = creatingStore.getState();
+
+      expect(storeState).toEqual(initialState);
     });
   });
 });

@@ -7,10 +7,11 @@ export default function createModuleFragment(config) {
   try {
     const fragmentConfig = FragmentConfiguration.create(config);
     const fragmentType = fragmentConfig.getType();
+    const fragmentBody = fragmentConfig.getBody();
     const fragmentProducer = createFragmentProducer(fragmentType);
-    const produceFragmentBody = fragmentProducer.getProduce(fragmentConfig.getBody());
-    const fragmentPattern = FragmentPattern.create(fragmentType, produceFragmentBody);
-    return ModuleFragment.create(fragmentPattern.get());
+    const producedFragment = fragmentProducer.produce(fragmentBody);
+    const fragmentPattern = FragmentPattern.create(fragmentType, producedFragment);
+    return ModuleFragment.create(fragmentPattern);
   } catch (error) {
     throw new TypeError(`createModuleFragment(config) => ${error.message}`);
   }

@@ -1,10 +1,10 @@
 export default class ModuleFragment {
   constructor(pattern) {
-    if (typeof pattern !== 'function') {
-      throw new TypeError('ModuleFragment => constructor(pattern): getting pattern must be function');
+    if (pattern.get === undefined) {
+      throw new TypeError('ModuleFragment => constructor(pattern): getting pattern must be FragmentPattern');
     }
 
-    this.get = () => pattern();
+    this.get = () => pattern.get();
   }
 
   static create(pattern) {

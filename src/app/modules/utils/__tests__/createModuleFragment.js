@@ -1,3 +1,4 @@
+import { createStore } from 'redux';
 import createModuleFragment from '../createModuleFragment';
 import ModuleFragment from '../ModuleFragment';
 
@@ -14,13 +15,20 @@ const invalidConfig = {
 const REDUCER_TYPE = 'reducer';
 const reducerConfig = {
   type: REDUCER_TYPE,
-  body: {},
+  body: {
+    workers: [
+      ['UP_COUNTER', prevState => ({ counter: prevState.counter + 1 })],
+    ],
+    initialState: {
+      counter: 0,
+    },
+  },
 };
 
 const COMPONENT_TYPE = 'component';
 const componentConfig = {
   type: COMPONENT_TYPE,
-  body: {},
+  body: () => null,
 };
 
 const SAGA_TYPE = 'saga';
@@ -47,6 +55,14 @@ describe('createModuleFragment(config)', () => {
     const [gettingType] = moduleFragment.get();
 
     expect(gettingType).toEqual(REDUCER_TYPE);
+  });
+  it('created ModuleFragment should return pare with correct reducer at second position if get config for reducer', () => {
+    const moduleFragment = createModuleFragment(reducerConfig);
+
+    const [gettingType, gettingReducer] = moduleFragment.get();
+    const store = createStore(gettingReducer);
+
+    expect(store.getState().counter).toBe(0);
   });
   it('created ModuleFragment should return pare with "component" type at first position if get config for component', () => {
     const moduleFragment = createModuleFragment(componentConfig);

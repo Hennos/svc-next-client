@@ -1,16 +1,16 @@
 export default class FragmentPattern {
-  static create(type, produce) {
+  static create(type, fragment) {
     if (typeof type !== 'string') {
       throw new TypeError('FragmentPattern => constructor(type, produce): type must be string');
     }
-    if (typeof produce !== 'function') {
-      throw new TypeError('FragmentPattern => constructor(type, produce): produce must be function');
+    if (fragment === undefined) {
+      throw new TypeError('FragmentPattern => constructor(type, produce): fragment must not be undefined');
     }
 
-    return new FragmentPattern(type, produce);
+    return new FragmentPattern(type, fragment);
   }
 
-  constructor(type, produce) {
-    this.get = () => () => [type, produce()];
+  constructor(type, fragment) {
+    this.get = () => [type, fragment];
   }
 }

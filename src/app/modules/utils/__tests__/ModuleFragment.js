@@ -1,11 +1,12 @@
 import ModuleFragment from '../ModuleFragment';
+import FragmentPattern from '../FragmentPattern';
 
 describe('ModuleFragment', () => {
   const type = 'some';
-  const produce = () => {};
-  const correctPattern = () => [type, produce()];
+  const fragment = {};
+  const correctPattern = FragmentPattern.create(type, fragment);
   const invalidPattern = 'invalid';
-  const formedPare = correctPattern();
+  const formedPare = correctPattern.get();
 
   describe('static create(pattern)', () => {
     it('should create instance of ModuleFragment', () => {
@@ -13,7 +14,7 @@ describe('ModuleFragment', () => {
 
       expect(moduleFragment).toBeInstanceOf(ModuleFragment);
     });
-    it ('should throw TypeError if pattern is not a function', () => {
+    it ('should throw TypeError if pattern is not a FragmentPattern', () => {
       const createFragmentCaller = () => ModuleFragment.create(invalidPattern);
 
       expect(createFragmentCaller).toThrow(TypeError);

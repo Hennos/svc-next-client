@@ -3,9 +3,7 @@ export default class FragmentProducer {
     throw new ReferenceError('FragmentProducer: create() is abstract and must be rewrite on childs');
   }
 
-  constructor() {}
-
-  getProduce(body) {
-    throw new ReferenceError('FragmentProducer: getProduce() is abstract and must be rewrite on childs');
+  produce(body) {
+    throw new ReferenceError('FragmentProducer: produce() is abstract and must be rewrite on childs');
   }
 }

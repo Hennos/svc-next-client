@@ -5,9 +5,7 @@ export default class FragmentProducerSaga extends FragmentProducer {
     return new FragmentProducerSaga();
   }
 
-  constructor() {
-    super('saga');
+  produce(body) {
+    
   }
-
-  getProduce() {}
 }

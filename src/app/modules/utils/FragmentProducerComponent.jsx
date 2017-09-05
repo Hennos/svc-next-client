@@ -6,15 +6,11 @@ export default class FragmentProducerComponent extends FragmentProducer {
     return new FragmentProducerComponent();
   }
 
-  constructor() {
-    super('component');
-  }
-
-  getProduce(body) {
+  produce(body) {
     if (typeof body !== 'function') {
       throw new TypeError('FragmentProducer => getProduce(body): body is not a function');
     }
 
-    return () => <body />;
+    return <body />;
   }
 }

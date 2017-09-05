@@ -27,50 +27,34 @@ describe('FragmentProducerReducer', () => {
   const invalidWorkers = {
     [upCounterAction.type]: upCounterInState,
   };
-  const invalidBody = undefined;
+  const invalidBody = {
+    workers: invalidWorkers,
+    initialState,
+  };
+  const fragmentProducer = FragmentProducerReducer.create();
 
   describe('static create()', () => {
     it('returning instance should be instance of FragmentProducer', () => {
-      const fragmentProducer = FragmentProducerReducer.create();
-
       expect(fragmentProducer).toBeInstanceOf(FragmentProducer);
     });
     it('returning instance should be instance of FragmentProducerReducer', () => {
-      const fragmentProducer = FragmentProducerReducer.create();
-
       expect(fragmentProducer).toBeInstanceOf(FragmentProducerReducer);
     });
   });
 
-  describe('getProduce(body)', () => {
-    it('returning value should be function', () => {
-      const fragmentProducer = FragmentProducerReducer.create();
-
-      const gettingProduce = fragmentProducer.getProduce(emptyBody);
-      const produceIsFunc = typeof gettingProduce === 'function';
-
-      expect(produceIsFunc).toBeTruthy();
-    });
+  describe('produce(body)', () => {
     it('should throw TypeError if getting invalid body', () => {
-      const fragmentProducer = FragmentProducerReducer.create();
+      const produceCaller = () => fragmentProducer.produce(invalidBody);
 
-      const getProduceCaller = () => fragmentProducer.getProduce(invalidBody);
-
-      expect(getProduceCaller).toThrow(TypeError);
+      expect(produceCaller).toThrow(TypeError);
     });
-    it('returning produce() should create reducer()', () => {
-      const fragmentProducer = FragmentProducerReducer.create();
+    it('should return reducer', () => {
+      const producingReducer = fragmentProducer.produce(correctBody);
 
-      const gettingProduce = fragmentProducer.getProduce(correctBody);
-      const producingReducer = gettingProduce();
-
-      expect(producingReducer({ counter: 0 }, upCounterAction)).toEqual({ counter: 1 });
+      expect(producingReducer(undefined, upCounterAction)).toEqual({ counter: 1 });
     });
-    it('redux should create store with state equals initialState in body if get reducer, returning by produce()', () => {
-      const fragmentProducer = FragmentProducerReducer.create();
-
-      const gettingProduce = fragmentProducer.getProduce(correctBody);
-      const producingReducer = gettingProduce();
+    it('redux should create store with state equals initialState by getting created reducer', () => {
+      const producingReducer = fragmentProducer.produce(correctBody);
       const creatingStore = createStore(producingReducer);
       const storeState = creatingStore.getState();
 

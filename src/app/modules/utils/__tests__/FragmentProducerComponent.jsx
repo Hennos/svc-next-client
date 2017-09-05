@@ -20,24 +20,17 @@ describe('FragmentProducerComponent', () => {
     });
   });
 
-  describe('getProduce(body)', () => {
+  describe('produce(body)', () => {
     const fragmentProducer = FragmentProducerComponent.create();
 
-    it('returning value should be function', () => {
-      const gettingProduce = fragmentProducer.getProduce(body);
-      const produceIsFunc = typeof gettingProduce === 'function';
+    it('should throw TypeError if getting body is invalid', () => {
+      const produceCaller = () => fragmentProducer.produce(invalidBody);
 
-      expect(produceIsFunc).toBeTruthy();
-    });
-    it('should throw TypeError if getting body in not a function', () => {
-      const getProduceCaller = () => fragmentProducer.getProduce(invalidBody);
-
-      expect(getProduceCaller).toThrow(TypeError);
+      expect(produceCaller).toThrow(TypeError);
     });
     it('should return valid react component', () => {
-      const gettingProduce = fragmentProducer.getProduce(body);
-      const producingComponent = gettingProduce();
-      const wrappedComponent = shallow(producingComponent);
+      const producedComponent = fragmentProducer.produce(body);
+      const wrappedComponent = shallow(producedComponent);
 
       expect(wrappedComponent.equals(<body />)).toBeTruthy();
     });

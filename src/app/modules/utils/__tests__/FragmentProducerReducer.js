@@ -27,10 +27,7 @@ describe('FragmentProducerReducer', () => {
   const invalidWorkers = {
     [upCounterAction.type]: upCounterInState,
   };
-  const invalidBody = {
-    workers: invalidWorkers,
-    initialState,
-  };
+  const invalidBody = undefined;
 
   describe('static create()', () => {
     it('returning instance should be instance of FragmentProducer', () => {
@@ -57,7 +54,7 @@ describe('FragmentProducerReducer', () => {
     it('should throw TypeError if getting invalid body', () => {
       const fragmentProducer = FragmentProducerReducer.create();
 
-      const getProduceCaller = fragmentProducer.getProduce(invalidBody);
+      const getProduceCaller = () => fragmentProducer.getProduce(invalidBody);
 
       expect(getProduceCaller).toThrow(TypeError);
     });

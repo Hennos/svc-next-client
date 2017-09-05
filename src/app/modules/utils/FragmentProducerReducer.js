@@ -10,7 +10,7 @@ export default class FragmentProducerReducer extends FragmentProducer {
     super('reducer');
   }
 
-  getProduce(body = {}) {
+  getProduce(body) {
     if (typeof body !== 'object') {
       throw new TypeError('FragmentProducerReducer => getProduce(body): body must be object');
     }
@@ -27,7 +27,7 @@ export default class FragmentProducerReducer extends FragmentProducer {
           return state;
         };
       } catch (error) {
-        throw new TypeError(`FragmentProducerReducer => getProduce: workers in body => ${error.message}`);
+        throw new TypeError(`FragmentProducerReducer => getProduce(body): workers in body => ${error.message}`);
       }
     };
   }

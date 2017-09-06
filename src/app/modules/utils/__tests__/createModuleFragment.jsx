@@ -1,4 +1,10 @@
-import { createStore } from 'redux';
+import {
+  createStore,
+  applyMiddleware
+} from 'redux';
+import { shallow } from 'enzyme';
+import createSagaMiddleware from 'redux-saga';
+import { put } from 'redux-saga/effects';
 import createModuleFragment from '../createModuleFragment';
 import ModuleFragment from '../ModuleFragment';
 
@@ -13,16 +19,35 @@ const invalidConfig = {
 };
 
 const REDUCER_TYPE = 'reducer';
+const upCounterByReducerActionType = 'UP_COUNTER_REDUCER';
+const upCounterByReducerAction = {
+  type: upCounterByReducerActionType,
+};
+const upCounter = prevState => ({
+  counter: prevState.counter + 1,
+});
+const initialState = {
+  counter: 0,
+};
+const stateAfterUpCounter = upCounter(initialState);
 const reducerConfig = {
   type: REDUCER_TYPE,
   body: {
     workers: [
-      ['UP_COUNTER', prevState => ({ counter: prevState.counter + 1 })],
+      [upCounterByReducerActionType, upCounter],
     ],
     initialState: {
       counter: 0,
     },
   },
+};
+const handmadeReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case upCounterByReducerActionType:
+      return upCounter(state);
+    default:
+      return state;
+  }
 };
 
 const COMPONENT_TYPE = 'component';
@@ -31,10 +56,19 @@ const componentConfig = {
   body: () => null,
 };
 
+const upCounterBySagaActionType = 'UP_COUNTER_SAGA';
+const upCounterBySagaAction = {
+  type: upCounterBySagaActionType,
+};
+function* upCounterBySaga() {
+  yield put(upCounterByReducerAction);
+}
 const SAGA_TYPE = 'saga';
 const sagaConfig = {
   type: SAGA_TYPE,
-  body: {},
+  body: [
+    [upCounterBySagaActionType, upCounterBySaga],
+  ],
 };
 
 describe('createModuleFragment(config)', () => {
@@ -48,7 +82,7 @@ describe('createModuleFragment(config)', () => {
 
     expect(createModuleFragmentCaller).toThrow(TypeError);
   });
-  // Проверять сообщения ошибок, могут неправильно конфигурироваться
+  // todo: Проверять сообщения ошибок, могут неправильно конфигурироваться
   it('created ModuleFragment should return pare with "reducer" type at first position if get config for reducer', () => {
     const moduleFragment = createModuleFragment(reducerConfig);
 
@@ -61,8 +95,10 @@ describe('createModuleFragment(config)', () => {
 
     const [gettingType, gettingReducer] = moduleFragment.get();
     const store = createStore(gettingReducer);
+    store.dispatch(upCounterByReducerAction);
+    const currentState = store.getState();
 
-    expect(store.getState().counter).toBe(0);
+    expect(currentState).toEqual(stateAfterUpCounter);
   });
   it('created ModuleFragment should return pare with "component" type at first position if get config for component', () => {
     const moduleFragment = createModuleFragment(componentConfig);
@@ -71,11 +107,34 @@ describe('createModuleFragment(config)', () => {
 
     expect(gettingType).toEqual(COMPONENT_TYPE);
   });
+  it('createdModuleFragment should return pare with valid component at second position if get config for component', () => {
+    const moduleFragment = createModuleFragment(componentConfig);
+
+    const [gettingType, gettingComponent] = moduleFragment.get();
+    const wrapComponentCaller = () => shallow(gettingComponent);
+
+    expect(wrapComponentCaller).not.toThrow();
+  });
   it('created ModuleFragment should return pare with "saga" type at first position if get config for saga', () => {
     const moduleFragment = createModuleFragment(sagaConfig);
 
     const [gettingType] = moduleFragment.get();
 
     expect(gettingType).toEqual(SAGA_TYPE);
+  });
+  it('created ModuleFragment should return pare with valid saga at second position of get config for saga', () => {
+    const moduleFragment = createModuleFragment(sagaConfig);
+
+    const [gettingType, gettingSaga] = moduleFragment.get();
+    const sagaMiddleware = createSagaMiddleware();
+    const store = createStore(
+      handmadeReducer,
+      applyMiddleware(sagaMiddleware),
+    );
+    sagaMiddleware.run(gettingSaga);
+    store.dispatch(upCounterBySagaAction);
+    const currentState = store.getState();
+
+    expect(currentState).toEqual(stateAfterUpCounter);
   });
 });

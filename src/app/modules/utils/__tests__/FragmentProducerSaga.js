@@ -1,8 +1,8 @@
 import {
   createStore,
-  applyMiddleware
+  applyMiddleware,
 } from 'redux';
-import { createSagaMiddleware } from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 import FragmentProducerSaga from '../FragmentProducerSaga';
 import FragmentProducer from '../FragmentProducer';
 
@@ -28,14 +28,17 @@ describe('FragmentProducerSaga', () => {
       expect(produceCaller).toThrow();
     });
     it('should return valid saga', () => {
-      const producingSaga = fragmentProducer.produce(body);
+      const runSagaCaller = () => {
+        const producingSaga = fragmentProducer.produce(body);
 
-      const sagaMiddleware = createSagaMiddleware();
-      const store = createStore(
-        reducer,
-        applyMiddleware(sagaMiddleware),
-      );
-      const runSagaCaller = () => sagaMiddleware.run(producingSaga);
+        const sagaMiddleware = createSagaMiddleware();
+        const store = createStore(
+          reducer,
+          applyMiddleware(sagaMiddleware),
+        );
+
+        sagaMiddleware.run(producingSaga);
+      };
 
       expect(runSagaCaller).not.toThrow();
     });

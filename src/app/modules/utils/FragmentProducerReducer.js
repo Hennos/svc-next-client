@@ -8,7 +8,7 @@ export default class FragmentProducerReducer extends FragmentProducer {
 
   produce(body = {}) {
     if (typeof body !== 'object') {
-      throw new TypeError('FragmentProducerReducer => getProduce(body): body must be object');
+      throw new TypeError('FragmentProducerReducer => produce(body): body must be object');
     }
     try {
       const { workers = [], initialState = {} } = body;
@@ -23,7 +23,7 @@ export default class FragmentProducerReducer extends FragmentProducer {
         return state;
       };
     } catch (error) {
-      throw new TypeError(`FragmentProducerReducer => getProduce(body): workers in body => ${error.message}`);
+      throw new TypeError(`FragmentProducerReducer => produce(body): workers in body => ${error.message}`);
     }
   }
 }

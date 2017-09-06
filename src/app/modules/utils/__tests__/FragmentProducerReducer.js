@@ -12,9 +12,7 @@ describe('FragmentProducerReducer', () => {
 
   const initialState = {
     counter: 0,
-  }
-
-  const emptyBody = {};
+  };
 
   const correctWorkers = [
     [upCounterAction.type, upCounterInState],

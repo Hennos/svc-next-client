@@ -1,40 +1,66 @@
 import AppModule from '../AppModule';
 
-function createAppModuleBody() {
-  return {
-    component: () => null,
-    reducer: {
+describe('AppModule', () => {
+  const configsWithInvalid = [{
+    type: 'component',
+    body: () => null,
+  }, {
+    type: 'reducer',
+    body: {
       initialState: {
         counter: 0,
       },
       workers: [
-        ['SOMEONE_ACTION', () => null],
+        ['SOMEONE_ACTION', state => state],
       ],
     },
-    saga: [],
-  };
-}
+  }, {
+    type: 'saga',
+    body: [],
+  }, {
+    type: 'invalid',
+  }];
+  const invalidConfigs = {};
+  const configsWithoutInvalid = configsWithInvalid.filter(({ type }) => type !== 'invalid');
+  const configsWithoutInvalidFragmentsTypes = configsWithoutInvalid.map(({ type }) => type);
 
-describe('AppModule', () => {
-  const body = createAppModuleBody();
-
-  describe('static create(body)', () => {
+  describe('static create(configs)', () => {
     it('should create instance of AppModule', () => {
-      const appModule = AppModule.create(body);
+      const appModule = AppModule.create(configsWithoutInvalid);
 
       expect(appModule).toBeInstanceOf(AppModule);
+    });
+    it('should throw TypeError if configs is not array', () => {
+      const createAppModuleCaller = () => AppModule.create(invalidConfigs);
+
+      expect(createAppModuleCaller).toThrow(TypeError);
+    });
+    it('default configs should be empty array', () => {
+      const appModule = AppModule.create();
+
+      const configuratedModule = appModule.configurate();
+      const moduleFragmentsTypes = Object.keys(configuratedModule);
+
+      expect(moduleFragmentsTypes).toEqual([]);
     });
   });
 
   describe('configurate()', () => {
     it('should return object with configurated module fragments', () => {
-      const appModule = AppModule.create(body);
+      const appModule = AppModule.create(configsWithoutInvalid);
 
-      const plainModule = appModule.configurate();
-      const plainModulePropertiesName = Object.keys(plainModule);
-      const configFragmentsName = Object.keys(body);
+      const configuratedModule = appModule.configurate();
+      const moduleFragmentsTypes = Object.keys(configuratedModule);
 
-      expect(plainModulePropertiesName).toEqual(configFragmentsName);
+      expect(moduleFragmentsTypes).toEqual(configsWithoutInvalidFragmentsTypes);
+    });
+    it('should ignore invalid config entry in configs', () => {
+      const appModule = AppModule.create(configsWithInvalid);
+
+      const configuratedModule = appModule.configurate();
+      const moduleFragmentsTypes = Object.keys(configuratedModule);
+
+      expect(moduleFragmentsTypes).toEqual(configsWithoutInvalidFragmentsTypes);
     });
   });
 });

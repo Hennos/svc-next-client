@@ -7,12 +7,13 @@ import createSagaMiddleware from 'redux-saga';
 import { put } from 'redux-saga/effects';
 import createModuleFragment from '../createModuleFragment';
 import ModuleFragment from '../ModuleFragment';
+import FragmentConfiguration from '../FragmentConfiguration';
 
 const CORRECT_TYPE = 'reducer';
-const correctConfig = {
+const correctConfig = FragmentConfiguration.create({
   type: CORRECT_TYPE,
   body: {},
-};
+});
 
 const invalidConfig = {
   body: {},
@@ -30,7 +31,7 @@ const initialState = {
   counter: 0,
 };
 const stateAfterUpCounter = upCounter(initialState);
-const reducerConfig = {
+const reducerConfig = FragmentConfiguration.create({
   type: REDUCER_TYPE,
   body: {
     workers: [
@@ -40,7 +41,7 @@ const reducerConfig = {
       counter: 0,
     },
   },
-};
+});
 const handmadeReducer = (state = initialState, action) => {
   switch (action.type) {
     case upCounterByReducerActionType:
@@ -51,10 +52,10 @@ const handmadeReducer = (state = initialState, action) => {
 };
 
 const COMPONENT_TYPE = 'component';
-const componentConfig = {
+const componentConfig = FragmentConfiguration.create({
   type: COMPONENT_TYPE,
   body: () => null,
-};
+});
 
 const upCounterBySagaActionType = 'UP_COUNTER_SAGA';
 const upCounterBySagaAction = {
@@ -64,12 +65,12 @@ function* upCounterBySaga() {
   yield put(upCounterByReducerAction);
 }
 const SAGA_TYPE = 'saga';
-const sagaConfig = {
+const sagaConfig = FragmentConfiguration.create({
   type: SAGA_TYPE,
   body: [
     [upCounterBySagaActionType, upCounterBySaga],
   ],
-};
+});
 
 describe('createModuleFragment(config)', () => {
   it('should return instance of ModuleFragment', () => {

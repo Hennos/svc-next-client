@@ -1,13 +1,14 @@
-import FragmentConfiguration from './FragmentConfiguration';
 import createFragmentProducer from './createFragmentProducer';
 import FragmentPattern from './FragmentPattern';
 import ModuleFragment from './ModuleFragment';
 
 export default function createModuleFragment(config) {
+  if (!(config.getType && config.getBody)) {
+    throw new TypeError('createModuleFragment: config is invalid');
+  }
   try {
-    const fragmentConfig = FragmentConfiguration.create(config);
-    const fragmentType = fragmentConfig.getType();
-    const fragmentBody = fragmentConfig.getBody();
+    const fragmentType = config.getType();
+    const fragmentBody = config.getBody();
     const fragmentProducer = createFragmentProducer(fragmentType);
     const producedFragment = fragmentProducer.produce(fragmentBody);
     const fragmentPattern = FragmentPattern.create(fragmentType, producedFragment);

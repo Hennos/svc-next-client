@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   createStore,
-  applyMiddleware
+  applyMiddleware,
 } from 'redux';
 import { mount } from 'enzyme';
 import createSagaMiddleware from 'redux-saga';

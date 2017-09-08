@@ -1,4 +1,3 @@
-import React from 'react';
 import FragmentProducer from './FragmentProducer';
 
 export default class FragmentProducerComponent extends FragmentProducer {

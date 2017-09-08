@@ -8,7 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import { put } from 'redux-saga/effects';
 import configurateModule from '../configurateModule';
 
-describe ('configurateModule(configs)', () => {
+describe('configurateModule(configs)', () => {
   const upCounterActionType = 'UP_COUNTER';
   const upCounterBySagaActionType = 'UP_COUNTER_BY_SAGA';
   const upCounterAction = {

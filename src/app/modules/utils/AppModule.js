@@ -22,7 +22,7 @@ export default class AppModule {
       return moduleEntries.reduce((module, [type, fragment]) => {
         return Object.defineProperty(module, type, {
           enumerable: true,
-          valie: fragment,
+          value: fragment,
         });
       }, {});
     };

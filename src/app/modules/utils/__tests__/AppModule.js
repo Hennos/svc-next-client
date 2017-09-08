@@ -62,5 +62,14 @@ describe('AppModule', () => {
 
       expect(moduleFragmentsTypes).toEqual(configsWithoutInvalidFragmentsTypes);
     });
+    it('returning object should consist defined property at fragment type description', () => {
+      const appModule = AppModule.create(configsWithoutInvalid);
+
+      const configuratedModule = appModule.configurate();
+      const moduleValues = Object.values(configuratedModule);
+      const isFragmentsDefinedAsProperties = moduleValues.every(value => value !== undefined);
+
+      expect(isFragmentsDefinedAsProperties).toBeTruthy();
+    });
   });
 });

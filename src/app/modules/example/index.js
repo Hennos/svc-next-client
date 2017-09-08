@@ -1,14 +1,17 @@
-import createModule from '../utils/createModule';
+import configurateModule from '../utils/configurateModule';
 import component from './component';
 import reducer from './reducer';
-import saga from './stories';
+import stories from './stories';
 import { events, stateKeys } from './constants';
 
 // todo: очень много писанины, необходимо по максимуму ужать до лаконичного api
-export default createModule(
-  component,
-  reducer,
-  saga,
-  events,
-  stateKeys,
-);
+export default configurateModule([{
+  type: 'component',
+  body: component,
+}, {
+  type: 'reducer',
+  body: reducer,
+}, {
+  type: 'saga',
+  body: stories,
+}]);

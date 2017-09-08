@@ -7,7 +7,6 @@ function Routes() {
   return (
     <div className="routes">
       <Route path="/test" component={wrapMatched(modules.example.component)} />
-      <Route path="/connection" component={wrapMatched(modules.dataChannel.component)} />
     </div>
   );
 }

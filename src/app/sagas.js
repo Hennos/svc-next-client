@@ -4,7 +4,6 @@ import modules from './modules';
 function* rootSaga() {
   yield all([
     modules.example.saga(),
-    modules.dataChannel.saga(),
   ]);
 }
 

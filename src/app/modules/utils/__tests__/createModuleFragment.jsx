@@ -1,8 +1,9 @@
+import React from 'react';
 import {
   createStore,
   applyMiddleware
 } from 'redux';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import createSagaMiddleware from 'redux-saga';
 import { put } from 'redux-saga/effects';
 import createModuleFragment from '../createModuleFragment';
@@ -112,9 +113,9 @@ describe('createModuleFragment(config)', () => {
     const moduleFragment = createModuleFragment(componentConfig);
 
     const [gettingType, gettingComponent] = moduleFragment.get();
-    const wrapComponentCaller = () => shallow(gettingComponent);
+    const mountComponentCaller = () => mount(React.createElement(gettingComponent));
 
-    expect(wrapComponentCaller).not.toThrow();
+    expect(mountComponentCaller).not.toThrow();
   });
   it('created ModuleFragment should return pare with "saga" type at first position if get config for saga', () => {
     const moduleFragment = createModuleFragment(sagaConfig);

@@ -1,7 +1,8 @@
 import React from 'react';
+import { mount } from 'enzyme';
 import {
   createStore,
-  applyMiddleware
+  applyMiddleware,
 } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 import { put } from 'redux-saga/effects';
@@ -28,10 +29,9 @@ describe ('configurateModule(configs)', () => {
     counter: 0,
   };
   const upCounterState = upCounter(initialState);
-
   const configs = [{
     type: 'component',
-    body: () => null,
+    body: () => <div>Test</div>,
   }, {
     type: 'reducer',
     body: {
@@ -54,10 +54,15 @@ describe ('configurateModule(configs)', () => {
     expect(moduleIsObject).toBeTruthy();
   });
   it('with getting configs should return object with valid component at "component" property', () => {
-    
+    const gettingComponent = module.component;
+
+    const mountComponentCaller = () => mount(React.createElement(gettingComponent));
+
+    expect(mountComponentCaller).not.toThrow();
   });
   it('with getting configs should return object with valid reducer at "reducer" property', () => {
     const gettingReducer = module.reducer;
+
     const store = createStore(gettingReducer);
     store.dispatch(upCounterAction);
     const currentState = store.getState();
@@ -66,8 +71,8 @@ describe ('configurateModule(configs)', () => {
   });
   it('with getting configs should return object with valid saga at "saga" property', () => {
     const gettingReducer = module.reducer;
+
     const gettingSaga = module.saga;
-    console.error(Object.keys(module).length);
     const sagaMiddleware = createSagaMiddleware();
     const store = createStore(
       gettingReducer,

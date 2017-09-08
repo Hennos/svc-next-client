@@ -1,10 +1,10 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import FragmentProducerComponent from '../FragmentProducerComponent';
 import FragmentProducer from '../FragmentProducer';
 
 describe('FragmentProducerComponent', () => {
-  const body = () => <div>Test</div>;
+  const Component = () => <div>Test</div>;
   const invalidBody = 'invalid';
 
   describe('static create()', () => {
@@ -28,11 +28,12 @@ describe('FragmentProducerComponent', () => {
 
       expect(produceCaller).toThrow(TypeError);
     });
-    it('should return valid react component', () => {
-      const producedComponent = fragmentProducer.produce(body);
-      const wrappedComponent = shallow(producedComponent);
+    it('should return valid react functional component', () => {
+      const ProducedComponent = fragmentProducer.produce(Component);
 
-      expect(wrappedComponent.equals(<body />)).toBeTruthy();
+      const mountComponentCaller = () => mount(<ProducedComponent />);
+
+      expect(mountComponentCaller).not.toThrow();
     });
   });
 });

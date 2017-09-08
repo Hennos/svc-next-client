@@ -10,6 +10,6 @@ export default class FragmentProducerComponent extends FragmentProducer {
     if (typeof body !== 'function') {
       throw new TypeError('FragmentProducer => produce(body): body is not a function');
     }
-    return <body />;
+    return body;
   }
 }

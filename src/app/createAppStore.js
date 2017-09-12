@@ -3,6 +3,9 @@ import createSagaMiddleware from 'redux-saga';
 import reducers from './reducers';
 import rootSaga from './sagas';
 
+// todo: нужен модуль, который будет заниматься сборкой
+// проекта из послученного списка модулей проекта
+
 function createAppStore() {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(
@@ -14,4 +17,3 @@ function createAppStore() {
 }
 
 export default createAppStore;
-

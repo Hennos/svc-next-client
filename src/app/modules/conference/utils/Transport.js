@@ -15,39 +15,39 @@ export default class Transport {
     this.channel = NONE_CHANNEL;
   }
 
-  createChannel(connecting, connected, callback) {
+  createChannel(connecting, connected, pattern) {
     const firstArgIsPeerData = connecting instanceof PeerData;
     if (!firstArgIsPeerData) {
-      throw new TypeError('Transport => createChannel(connecting, connected, callback): connecting is not an instance of PeerData');
+      throw new TypeError('Transport => createChannel(connecting, connected, pattern): connecting is not an instance of PeerData');
     }
     const secondArgIsPeerData = connected instanceof PeerData;
     if (!secondArgIsPeerData) {
-      throw new TypeError('Transport => createChannel(connecting, connected, callback): connected is not an instance of PeerData');
+      throw new TypeError('Transport => createChannel(connecting, connected, pattern): connected is not an instance of PeerData');
     }
     const argsIsEqual = connecting.is(connected);
     if (argsIsEqual) {
-      throw new TypeError('Transport => createChannel(connecting, connected, callback): getting peers are equal');
+      throw new TypeError('Transport => createChannel(connecting, connected, pattern): getting peers are equal');
     }
 
-    if (typeof callback !== 'function') {
-      throw new TypeError('Transport => createChannel(connecting, connected, callback): callback is not a function');
+    if (typeof pattern !== 'function') {
+      throw new TypeError('Transport => createChannel(connecting, connected, pattern): pattern is not a function');
     }
 
     if (this.channel !== NONE_CHANNEL) {
-      throw new Error('Transport => creatChannel(connecting, connected, callback): transport`s channel has already created');
+      throw new Error('Transport => creatChannel(connecting, connected, pattern): transport`s pattern has already created');
     }
 
     this.connecting = PeerData.copy(connecting);
     this.connected = PeerData.copy(connected);
 
     try {
-      const createdChannel = callback(this.connecting, this.connected);
+      const createdChannel = pattern(this.connecting, this.connected);
 
       this.channel = Channel.create(createdChannel);
 
       return this.channel;
     } catch (error) {
-      throw new TypeError(`Transport => createChannel(callback): ${error.message}`);
+      throw new TypeError(`Transport => createChannel(connecting, connected, pattern): ${error.message}`);
     }
   }
 

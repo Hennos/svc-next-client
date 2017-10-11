@@ -28,6 +28,11 @@ describe('Transport', () => {
 
       expect(transport).toBeInstanceOf(Transport);
     });
+    it('should set status`s state to "inactive"', () => {
+      const transport = Transport.create();
+
+      expect(transport).toHaveProperty('status', 'inactive');
+    });
     it('should set connecting`s state to null', () => {
       const transport = Transport.create();
 
@@ -45,7 +50,82 @@ describe('Transport', () => {
     });
   });
 
-  describe('createChannel(connecting, connected, pattern)', () => {
+  describe('connect(connecting, connected)', () => {
+    const port = Transport.create();
+
+    afterEach(() => {
+      port.disconnect();
+    });
+
+    it('should return reference to transport', () => {
+      const result = port.connect(firstPeer, secondPeer);
+
+      expect(result).toBe(port);
+    });
+    it('should connect getting peers and set created channel to channel`s property', () => {
+      port.connect(firstPeer, secondPeer);
+      const settedChannel = port.channel;
+
+      expect(settedChannel).toBeInstanceOf(Channel);
+    });
+    it('should set "active" to status`s state in transport after creating connection', () => {
+      port.connect(firstPeer, secondPeer);
+      const settedStatus = port.status;
+
+      expect(settedStatus).toBe('active');
+    });
+    it('should set connecting to connecting`s state in transport', () => {
+      port.connect(firstPeer, secondPeer);
+
+      const connecting = port.connecting;
+
+      expect(connecting).toEqual(firstPeer);
+    });
+    it('set connecting shouldn`t to be copy by reference of getting connecting', () => {
+      port.connect(firstPeer, secondPeer);
+
+      const connecting = port.connecting;
+
+      expect(connecting).not.toBe(firstPeer);
+    });
+    it('should set connected to connected`s state in transport', () => {
+      port.connect(firstPeer, secondPeer);
+
+      const connected = port.connected;
+
+      expect(connected).toEqual(secondPeer);
+    });
+    it('set connected shouldn`t to be copy by reference of getting connected', () => {
+      port.connect(firstPeer, secondPeer);
+
+      const connected = port.connected;
+
+      expect(connected).not.toBe(secondPeer);
+    });
+    it('should throw TypeError if connecting is not an instance of PeerData', () => {
+      const connectCaller = () => port.connect(invalidPeer, secondPeer);
+
+      expect(connectCaller).toThrow(/is not an instance of PeerData/);
+    });
+    it('should throw TypeError if connected is not an instance of PeerData', () => {
+      const connectCaller = () => port.connect(firstPeer, invalidPeer);
+
+      expect(connectCaller).toThrow(/is not an instance of PeerData/);
+    });
+    it('should throw TypeError if getting peers are equal', () => {
+      const connectCaller = () => port.connect(firstPeer, firstPeer);
+
+      expect(connectCaller).toThrow(/peers are equal/);
+    });
+    it('should throw Error if transport already has active connection', () => {
+      port.connect(firstPeer, secondPeer);
+      const connectCaller = () => port.connect(firstPeer, secondPeer);
+
+      expect(connectCaller).toThrow(/alreay has active connection/);
+    });
+  });
+
+  describe('createChannel()', () => {
     const port = Transport.create();
     const errorMessage = 'U-ups';
     const cbWithError = () => {
@@ -57,46 +137,26 @@ describe('Transport', () => {
     });
 
     afterEach(() => {
-      port.closeChannel();
+      port.disconnect();
     });
 
     it('result should be an instance of Channel', () => {
-      const createdChannel = port.createChannel(firstPeer, secondPeer, pattern);
+      const createdChannel = port.createChannel(pattern);
 
       expect(createdChannel).toBeInstanceOf(Channel);
     });
-    it('should set created channel to channel`s property', () => {
-      const createdChannel = port.createChannel(firstPeer, secondPeer, pattern);
-      const settedChannel = port.channel;
+    it('state of transport should remain the same', () => {
+      // plain copy
+      const copyOfState = Object.assign({}, port);
 
-      expect(createdChannel).toBe(settedChannel);
-    });
-    it('should throw TypeError if connecting is not an isntance of PeerData', () => {
-      const createChannelCaller = () => port.createChannel(invalidPeer, secondPeer, pattern);
+      port.createChannel(pattern);
 
-      expect(createChannelCaller).toThrow(/is not an instance of PeerData/);
-    });
-    it('should throw TypeError if connected is not an instance of PeerData', () => {
-      const createChannelCaller = () => port.createChannel(firstPeer, invalidPeer, pattern);
-
-      expect(createChannelCaller).toThrow(/is not an instance of PeerData/);
-    });
-    it('should throw TypeError if getting peers are equal', () => {
-      const createChannelCaller = () => port.createChannel(firstPeer, firstPeer, pattern);
-
-      expect(createChannelCaller).toThrow(/peers are equal/);
+      expect(port).toEqual(copyOfState);
     });
     it('should throw TypeError if pattern is not a function', () => {
       const createChannelCaller = () => port.createChannel(firstPeer, secondPeer, invalidPattern);
 
       expect(createChannelCaller).toThrow(/is not a function/);
-    });
-    it('should throw error if transport already has created channel', () => {
-      port.createChannel(firstPeer, secondPeer, pattern);
-
-      const createChannelCaller = () => port.createChannel(firstPeer, secondPeer, pattern);
-
-      expect(createChannelCaller).toThrow(/already created/);
     });
     it('should catch error throwing by pattern', () => {
       const createChannelCaller = () => port.createChannel(firstPeer, secondPeer, cbWithError);
@@ -110,35 +170,51 @@ describe('Transport', () => {
     });
   });
 
-  describe('closeChannel()', () => {
+  describe('disconnect()', () => {
     const port = Transport.create();
 
-    it('channel`s state remain the same if channel is not created yet', () => {
-      const oldChannelPropertyValue = port.channel;
-      port.closeChannel();
-      const newChannelPropertyValue = port.channel;
+    it('should return reference to transport', () => {
+      port.connect(firstPeer, secondPeer);
 
-      expect(oldChannelPropertyValue).toEqual(newChannelPropertyValue);
+      const result = port.disconnect();
+
+      expect(result).toBe(port);
     });
-    it('after closing channel`s state value should be null', () => {
+    it('state of transport should remain the same if connection hasn`t created yet', () => {
+      // plain copy
+      const copyOfState = Object.assign({}, port);
+
+      port.disconnect();
+
+      expect(port).toEqual(copyOfState);
+    });
+    it('after closing status`s state value should be "inactive"', () => {
+      port.connect(firstPeer, secondPeer);
+
+      port.disconnect();
+
+      expect(port).toHaveProperty('status', 'inactive');
+    });
+    it('after closing connecting`s state value should be null', () => {
+      port.connect(firstPeer, secondPeer);
+
+      port.disconnect();
+
+      expect(port).toHaveProperty('connecting', null);
+    });
+    it('after closing connected`s state value should be null', () => {
+      port.connect(firstPeer, secondPeer);
+
+      port.disconnect();
+
+      expect(port).toHaveProperty('connected', null);
+    });
+    it('after disconnect channel`s state value should be null', () => {
       port.createChannel(firstPeer, secondPeer, pattern);
 
-      port.closeChannel();
-      const updatedChannelProperty = port.channel;
+      port.disconnect();
 
-      expect(updatedChannelProperty).toBeNull();
-    });
-    it('should return reference to transport instance if closeChannel calling on transport without created channel', () => {
-      const returningValue = port.closeChannel();
-
-      expect(returningValue).toBe(port);
-    });
-    it('should return reference to transport instance if closeChannel calling on transport with created channel', () => {
-      port.createChannel(firstPeer, secondPeer, pattern);
-
-      const returningValue = port.closeChannel();
-
-      expect(returningValue).toBe(port);
+      expect(port).toHaveProperty('channel', null);
     });
   });
 
@@ -146,16 +222,16 @@ describe('Transport', () => {
     const port = Transport.create();
 
     afterEach(() => {
-      port.closeChannel();
+      port.disconnect();
     });
 
-    it('should return false if channel not yet created', () => {
+    it('should return false if connection hasn`t created yet', () => {
       const result = port.isActive();
 
       expect(result).toBeFalsy();
     });
-    it('should return true if channel created', () => {
-      port.createChannel(firstPeer, secondPeer, pattern);
+    it('should return true if connection has created', () => {
+      port.connect(firstPeer, secondPeer);
 
       const result = port.isActive();
 

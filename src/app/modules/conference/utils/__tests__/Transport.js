@@ -51,10 +51,10 @@ describe('Transport', () => {
   });
 
   describe('connect(connecting, connected)', () => {
-    const port = Transport.create();
+    let port = Transport.create();
 
     afterEach(() => {
-      port.disconnect();
+      port = Transport.create();
     });
 
     it('should return reference to transport', () => {
@@ -121,12 +121,12 @@ describe('Transport', () => {
       port.connect(firstPeer, secondPeer);
       const connectCaller = () => port.connect(firstPeer, secondPeer);
 
-      expect(connectCaller).toThrow(/alreay has active connection/);
+      expect(connectCaller).toThrow(/already has active connection/);
     });
   });
 
   describe('createChannel()', () => {
-    const port = Transport.create();
+    let port = Transport.create();
     const errorMessage = 'U-ups';
     const cbWithError = () => {
       throw new Error(errorMessage);
@@ -137,11 +137,11 @@ describe('Transport', () => {
     });
 
     afterEach(() => {
-      port.disconnect();
+      port = Transport.create();
     });
 
     it('result should be an instance of Channel', () => {
-      const createdChannel = port.createChannel(pattern);
+      const createdChannel = port.createChannel(firstPeer, secondPeer, pattern);
 
       expect(createdChannel).toBeInstanceOf(Channel);
     });
@@ -149,7 +149,7 @@ describe('Transport', () => {
       // plain copy
       const copyOfState = Object.assign({}, port);
 
-      port.createChannel(pattern);
+      port.createChannel(firstPeer, secondPeer, pattern);
 
       expect(port).toEqual(copyOfState);
     });
@@ -171,7 +171,11 @@ describe('Transport', () => {
   });
 
   describe('disconnect()', () => {
-    const port = Transport.create();
+    let port = Transport.create();
+
+    afterEach(() => {
+      port = Transport.create();
+    });
 
     it('should return reference to transport', () => {
       port.connect(firstPeer, secondPeer);

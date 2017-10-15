@@ -125,7 +125,7 @@ describe('Transport', () => {
     });
   });
 
-  describe('createChannel()', () => {
+  describe('createChannel(connecting, connected, pattern)', () => {
     let port = Transport.create();
     const errorMessage = 'U-ups';
     const cbWithError = () => {

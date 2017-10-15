@@ -1,8 +1,6 @@
 import PeerData from './PeerData';
 import Channel from './Channel';
 
-const NONE_CHANNEL = null;
-
 const INACTIVE_STATUS = 'inactive';
 const ACTIVE_STATUS = 'active';
 
@@ -17,7 +15,7 @@ export default class Transport {
     this.connecting = null;
     this.connected = null;
 
-    this.channel = NONE_CHANNEL;
+    this.channel = null;
   }
 
   connect(connecting, connected) {
@@ -52,7 +50,6 @@ export default class Transport {
     return this;
   }
 
-  // todo: стоит перенести в конструктор Channel
   createChannel(connecting, connected, pattern) {
     const firstArgIsPeerData = connecting instanceof PeerData;
     if (!firstArgIsPeerData) {
@@ -84,7 +81,7 @@ export default class Transport {
     }
 
     this.channel.close();
-    this.channel = NONE_CHANNEL;
+    this.channel = null;
 
     this.connecting = null;
     this.connected = null;

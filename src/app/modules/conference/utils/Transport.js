@@ -5,11 +5,20 @@ const INACTIVE_STATUS = 'inactive';
 const ACTIVE_STATUS = 'active';
 
 export default class Transport {
-  static create() {
-    return new Transport();
+  static create(pattern) {
+    return new Transport(pattern);
   }
 
-  constructor() {
+  constructor(pattern) {
+    // region arguments type checks
+    const argIsFunction = typeof pattern === 'function';
+    if (!argIsFunction) {
+      throw new TypeError('Transport => constructor(pattern): pattern is not a function');
+    }
+    // endregion
+
+    this.pattern = pattern;
+
     this.status = INACTIVE_STATUS;
 
     this.connecting = null;
@@ -19,10 +28,7 @@ export default class Transport {
   }
 
   connect(connecting, connected) {
-    if (this.isActive()) {
-      throw new Error('Transport => connect(connecting, connected): transport already has active connection');
-    }
-
+    // region arguments type checks
     const firstArgIsPeerData = connecting instanceof PeerData;
     if (!firstArgIsPeerData) {
       throw new TypeError('Transport => connect(connecting, connected): connecting is not an instance of PeerData');
@@ -35,44 +41,25 @@ export default class Transport {
     if (argsIsEqual) {
       throw new TypeError('Transport => connect(connecting, connected): getting peers are equal');
     }
+    // endregion
+
+    if (this.isActive()) {
+      throw new Error('Transport => connect(connecting, connected): transport already has active connection');
+    }
 
     this.connecting = PeerData.copy(connecting);
     this.connected = PeerData.copy(connected);
 
-    this.channel = this.createChannel(connecting, connected, () => ({
-      send: () => {},
-      onmessage: () => {},
-      close: () => {},
-    }));
+    try {
+      const connection = this.pattern(this.connecting, this.connected);
+      this.channel = Channel.create(connection);
+    } catch (error) {
+      throw new Error(`Transport => connect(connecting, connected): ${error.message}`);
+    }
 
     this.status = ACTIVE_STATUS;
 
     return this;
-  }
-
-  createChannel(connecting, connected, pattern) {
-    const firstArgIsPeerData = connecting instanceof PeerData;
-    if (!firstArgIsPeerData) {
-      throw new TypeError('Transport => createChannel(connecting, connected, pattern): connecting is not an instance of PeerData');
-    }
-    const secondArgIsPeerData = connected instanceof PeerData;
-    if (!secondArgIsPeerData) {
-      throw new TypeError('Transport => createChannel(connecting, connected, pattern): connected is not an instance of PeerData');
-    }
-    const argsIsEqual = connecting.is(connected);
-    if (argsIsEqual) {
-      throw new TypeError('Transport => createChannel(connecting, connected, pattern): getting peers are equal');
-    }
-
-    if (typeof pattern !== 'function') {
-      throw new TypeError('Transport => createChannel(connecting, connected, pattern): pattern is not a function');
-    }
-
-    try {
-      return Channel.create(pattern(this.connecting, this.connected));
-    } catch (error) {
-      throw new TypeError(`Transport => createChannel(connecting, connected, pattern): ${error.message}`);
-    }
   }
 
   disconnect() {

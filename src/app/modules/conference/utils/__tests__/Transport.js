@@ -22,39 +22,51 @@ describe('Transport', () => {
   });
   const invalidPattern = undefined;
 
-  describe('static create()', () => {
+  describe('static create(pattern)', () => {
     it('should create instance of Transport', () => {
-      const transport = Transport.create();
+      const transport = Transport.create(pattern);
 
       expect(transport).toBeInstanceOf(Transport);
     });
     it('should set status`s state to "inactive"', () => {
-      const transport = Transport.create();
+      const transport = Transport.create(pattern);
 
       expect(transport).toHaveProperty('status', 'inactive');
     });
+    it('should set pattern to pattern`s state', () => {
+      const transport = Transport.create(pattern);
+
+      const settedPattern = transport.pattern;
+
+      expect(settedPattern).toEqual(pattern);
+    });
     it('should set connecting`s state to null', () => {
-      const transport = Transport.create();
+      const transport = Transport.create(pattern);
 
       expect(transport).toHaveProperty('connecting', null);
     });
     it('should set connected`s state to null', () => {
-      const transport = Transport.create();
+      const transport = Transport.create(pattern);
 
       expect(transport).toHaveProperty('connected', null);
     });
-    it ('should set channel to null value', () => {
-      const transport = Transport.create(firstPeer, secondPeer);
+    it('should set channel to null value', () => {
+      const transport = Transport.create(pattern);
 
       expect(transport).toHaveProperty('channel', null);
+    });
+    it('should throw TypeError if pattern is not a function', () => {
+      const createTransportCaller = () => Transport.create(invalidPattern);
+
+      expect(createTransportCaller).toThrow(/is not a function/);
     });
   });
 
   describe('connect(connecting, connected)', () => {
-    let port = Transport.create();
+    let port = Transport.create(pattern);
 
     afterEach(() => {
-      port = Transport.create();
+      port = Transport.create(pattern);
     });
 
     it('should return reference to transport', () => {
@@ -125,56 +137,11 @@ describe('Transport', () => {
     });
   });
 
-  describe('createChannel(connecting, connected, pattern)', () => {
-    let port = Transport.create();
-    const errorMessage = 'U-ups';
-    const cbWithError = () => {
-      throw new Error(errorMessage);
-    };
-    const cbInvalidResult = () => ({
-      send: () => null,
-      onmessage: () => null,
-    });
-
-    afterEach(() => {
-      port = Transport.create();
-    });
-
-    it('result should be an instance of Channel', () => {
-      const createdChannel = port.createChannel(firstPeer, secondPeer, pattern);
-
-      expect(createdChannel).toBeInstanceOf(Channel);
-    });
-    it('state of transport should remain the same', () => {
-      // plain copy
-      const copyOfState = Object.assign({}, port);
-
-      port.createChannel(firstPeer, secondPeer, pattern);
-
-      expect(port).toEqual(copyOfState);
-    });
-    it('should throw TypeError if pattern is not a function', () => {
-      const createChannelCaller = () => port.createChannel(firstPeer, secondPeer, invalidPattern);
-
-      expect(createChannelCaller).toThrow(/is not a function/);
-    });
-    it('should catch error throwing by pattern', () => {
-      const createChannelCaller = () => port.createChannel(firstPeer, secondPeer, cbWithError);
-
-      expect(createChannelCaller).toThrow(new RegExp(errorMessage));
-    });
-    it('should throw error if returning by pattern result not a Channel-liked interface', () => {
-      const createChannelCaller = () => port.createChannel(firstPeer, secondPeer, cbInvalidResult);
-
-      expect(createChannelCaller).toThrow(Error);
-    });
-  });
-
   describe('disconnect()', () => {
-    let port = Transport.create();
+    let port = Transport.create(pattern);
 
     afterEach(() => {
-      port = Transport.create();
+      port = Transport.create(pattern);
     });
 
     it('should return reference to transport', () => {
@@ -214,7 +181,7 @@ describe('Transport', () => {
       expect(port).toHaveProperty('connected', null);
     });
     it('after disconnect channel`s state value should be null', () => {
-      port.createChannel(firstPeer, secondPeer, pattern);
+      port.connect(firstPeer, secondPeer);
 
       port.disconnect();
 
@@ -223,7 +190,7 @@ describe('Transport', () => {
   });
 
   describe('isActive()', () => {
-    const port = Transport.create();
+    const port = Transport.create(pattern);
 
     afterEach(() => {
       port.disconnect();

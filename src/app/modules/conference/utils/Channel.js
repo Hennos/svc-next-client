@@ -16,8 +16,8 @@ export default class Channel {
       throw new TypeError('Channel => contructor(connection): connection is invalid');
     }
 
-    this.send = connection.send;
-    this.onmessage = connection.onmessage;
-    this.close = connection.close;
+    this.send = connection.send.bind(connection);
+    this.onmessage = connection.onmessage.bind(connection);
+    this.close = connection.close.bind(connection);
   }
 }

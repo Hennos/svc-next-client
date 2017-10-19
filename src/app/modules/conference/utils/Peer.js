@@ -1,9 +1,5 @@
 import PeerData from './PeerData';
 
-// todo: Peer устанавливает соединение с использованием полученного объекта транспорта.
-// Однако, нет гарантий, что переданный транспорт содержит соединение данного пира к удалённому.
-// Следует проверять полученный транспорт на соответствие установленного соединения Peer.
-
 function isConnectedHasValidType(connected) {
   const isArrayOfString = array => array.every(element => (typeof element === 'string'));
   const isValueArrayOfString = value => Array.isArray(value) && isArrayOfString(value);

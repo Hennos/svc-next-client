@@ -4,7 +4,7 @@ import reducers from './reducers';
 import rootSaga from './sagas';
 
 // todo: нужен модуль, который будет заниматься сборкой
-// проекта из послученного списка модулей проекта
+// проекта из полученного списка модулей проекта
 
 function createAppStore() {
   const sagaMiddleware = createSagaMiddleware();

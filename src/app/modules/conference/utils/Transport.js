@@ -4,6 +4,8 @@ import Channel from './Channel';
 const INACTIVE_STATUS = 'inactive';
 const ACTIVE_STATUS = 'active';
 
+// todo: можно реализовать как конечный автомат (State Machine)
+
 export default class Transport {
   static create(pattern) {
     return new Transport(pattern);
@@ -52,7 +54,13 @@ export default class Transport {
 
     try {
       const connection = this.pattern(this.connecting, this.connected);
-      this.channel = Channel.create(connection);
+
+      const resultIsChannel = connection instanceof Channel;
+      if (!resultIsChannel) {
+        throw new Error('channel`s creating pattern return invalid result');
+      }
+
+      this.channel = connection;
     } catch (error) {
       throw new Error(`Transport => connect(connecting, connected): ${error.message}`);
     }

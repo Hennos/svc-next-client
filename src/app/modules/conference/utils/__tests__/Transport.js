@@ -15,7 +15,7 @@ describe('Transport', () => {
     name: 'bob',
     address: 'local',
   };
-  const pattern = () => ({
+  const pattern = () => Channel.create({
     send: () => null,
     onmessage: () => null,
     close: () => null,

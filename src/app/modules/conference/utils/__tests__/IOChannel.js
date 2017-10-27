@@ -1,4 +1,3 @@
-import io from 'socket.io-client';
 import IOChannel from '../IOChannel';
 import Channel from '../Channel';
 

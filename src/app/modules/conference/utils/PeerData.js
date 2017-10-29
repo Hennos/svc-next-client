@@ -51,4 +51,8 @@ export default class PeerData {
 
     return isPropertiesEqual;
   }
+
+  toObject() {
+    return Object.assign({}, PeerData.copy(this));
+  }
 }

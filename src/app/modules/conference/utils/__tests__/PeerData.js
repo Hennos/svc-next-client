@@ -109,4 +109,21 @@ describe('PeerData', () => {
       expect(datesIsEqual).toBeTruthy();
     });
   });
+
+  describe('toObject()', () => {
+    const peerData = PeerData.create(peerDesc);
+
+    it('should convert PeerData`s instance to plain js-object', () => {
+      const gettingDesc = peerData.toObject();
+
+      expect(gettingDesc).toEqual(peerDesc);
+    });
+    it('returning value should not be tied up with PeerData`s instance', () => {
+      const gettingFirstDesc = peerData.toObject();
+      gettingFirstDesc.name = 'Alex';
+      const gettingSecondDesc = peerData.toObject();
+
+      expect(gettingFirstDesc).not.toEqual(gettingSecondDesc);
+    });
+  });
 });

@@ -27,15 +27,5 @@ describe('IOChannel', () => {
 
       expect(channel).toBeInstanceOf(Channel);
     });
-    it('created channel should be working', (done) => {
-      const channel = IOChannel.create(connecting, connected);
-
-      channel.onmessage('connect', () => {
-        channel.send('test connection');
-      });
-      channel.onmessage('connection working', () => {
-        done();
-      });
-    });
   });
 });

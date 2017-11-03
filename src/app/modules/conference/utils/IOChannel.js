@@ -9,7 +9,12 @@ export default class IOChannel extends Channel {
   constructor(connecting, connected) {
     const address = connected.address;
 
-    const socket = io(address);
+    const socket = io(address, {
+      reconnection: true,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      reconnectionAttempts: 5,
+    });
 
     super({
       send: socket.emit.bind(socket),

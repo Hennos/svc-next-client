@@ -35,12 +35,8 @@ export default class P2PConnecter {
 
   constructor(signaling) {
     // #region type checking
-    const fArgIsBool = typeof initiator === 'boolean';
-    if (!fArgIsBool) {
-      throw new TypeError('P2PController => contructor(signaling): initiator is not a boolean');
-    }
-    const sArgIsChannel = signaling instanceof Channel;
-    if (!sArgIsChannel) {
+    const argIsChannel = signaling instanceof Channel;
+    if (!argIsChannel) {
       throw new TypeError('P2PController => contructor(signaling): signaling is not a Channel');
     }
     // #endregion

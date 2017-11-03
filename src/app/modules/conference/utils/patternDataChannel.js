@@ -9,5 +9,5 @@ export default async function patternDataChannel(connecter) {
 
   const connection = await connecter.createDataChannel();
 
-  return Channel.create(connection);
+  return () => Channel.create(connection);
 }

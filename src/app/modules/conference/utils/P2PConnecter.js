@@ -29,7 +29,7 @@ const ICEConfig = {
 const msgWebRTC = '@RTC/BASE';
 
 export default class P2PConnecter {
-  constructor(initiator, signaling) {
+  constructor(signaling) {
     // #region type checking
     const fArgIsBool = typeof initiator === 'boolean';
     if (!fArgIsBool) {
@@ -41,7 +41,7 @@ export default class P2PConnecter {
     }
     // #endregion
 
-    this.isInitiator = initiator;
+    this.isInitiator = false;
 
     this.connection = null;
     this.peer = null;
@@ -53,15 +53,14 @@ export default class P2PConnecter {
   }
 
   handleMessage(message) {
-    const data = JSON.parse(message);
-    const peer = data.id;
+    const peer = message.id;
 
     if (!this.connection) {
       this.createConnection(peer);
     }
 
-    if (data.desc) {
-      const desc = data.desc;
+    if (message.desc) {
+      const desc = message.desc;
       if (desc.type === 'offer') {
         this.connection
         .setRemoteDescription(desc)
@@ -74,16 +73,20 @@ export default class P2PConnecter {
       }
     } else {
       this.connection
-      .addIceCandidate(data.candidate)
+      .addIceCandidate(message.candidate)
       .catch(this.logError);
     }
   }
 
-  createConnection(peer) {
+  createConnection(peer, initiator = false) {
     // #region type checking
-    const argIsString = typeof peer === 'string';
-    if (!argIsString) {
+    const firstArgIsString = typeof peer === 'string';
+    if (!firstArgIsString) {
       throw new TypeError('P2PConnecter => createConnection(peer): peer is not a string');
+    }
+    const secondArgIsBool = typeof initiator === 'boolean';
+    if (!secondArgIsBool) {
+      throw new TypeError('P2PConnecter => createConnection(peer): initiator is not a boolean');
     }
     // #endregion
 
@@ -91,13 +94,15 @@ export default class P2PConnecter {
       throw new Error(`P2PConnecter => createConnection(peer): is already connected with ${this.peer}`);
     }
 
+    this.isInitiator = initiator;
+
     this.connection = new RTCPeerConnection(ICEConfig);
     this.connection.onicecandidate = (evt) => {
       console.log('icecandidate event: ', evt);
 
       if (evt.candidate) {
         this.sendSignal(msgWebRTC, {
-          peer,
+          id: peer,
           candidate: evt.candidate,
         });
       }
@@ -106,7 +111,7 @@ export default class P2PConnecter {
       this.connection.createOffer()
       .then(offer => this.connection.setLocalDescription(offer))
       .then(() => this.sendSignal(msgWebRTC, {
-        peer,
+        id: peer,
         desc: this.connection.localDescription,
       }))
       .catch(this.logError);
@@ -143,7 +148,7 @@ export default class P2PConnecter {
     this.connection.createAnswer()
       .then(answer => this.connection.setLocalDescription(answer))
       .then(() => this.sendSignal(msgWebRTC, {
-        peer,
+        id: peer,
         desc: this.connection.localDescription,
       }))
       .catch(this.logError);

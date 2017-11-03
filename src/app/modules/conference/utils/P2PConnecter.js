@@ -29,6 +29,10 @@ const ICEConfig = {
 const msgWebRTC = '@RTC/BASE';
 
 export default class P2PConnecter {
+  static create(signaling) {
+    return new P2PConnecter(signaling);
+  }
+
   constructor(signaling) {
     // #region type checking
     const fArgIsBool = typeof initiator === 'boolean';

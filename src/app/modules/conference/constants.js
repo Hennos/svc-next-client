@@ -1,5 +1,5 @@
 const events = {
-  sendData: '@PEER/DATA',
+  sendPeerData: '@PEER/DATA',
 
   addClients: '@PEER/CLIENTS',
 
@@ -10,6 +10,7 @@ const events = {
 
   connect: '@SERVER/CONNECT',
   connectDone: '@SERVER/CONNECTED',
+  sendMessage: '@SERVER/MESSAGE',
 };
 
 const stateKeys = {

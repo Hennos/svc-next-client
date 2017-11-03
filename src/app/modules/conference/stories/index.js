@@ -1,6 +1,6 @@
 import { events } from '../constants';
-import connectWithServer from './connectWithServer';
+import createConnection from './createConnection';
 
 export default [
-  [events.connect, connectWithServer],
+  [events.connect, createConnection],
 ];

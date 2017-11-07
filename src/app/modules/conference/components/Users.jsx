@@ -8,9 +8,9 @@ import {
 function Users({ users, createConnection }) {
   return (
     <div>{
-      Object.keys(users).map(id => (
-        <button onClick={() => createConnection(id)} key={id}>{users[id].name}</button>
-      ))
+        Object.keys(users).map(id => (
+          <button onClick={() => createConnection(id)} key={id}>{users[id].name}</button>
+        ))
     }</div>
   );
 }

@@ -19,9 +19,43 @@ const resetPeer = peer => ({
   peer,
 });
 
+const connectP2P = signaling => ({
+  type: events.connectP2P,
+  signaling,
+});
+
+const openConnection = () => ({
+  type: events.openConnection,
+});
+
+const getP2PSignal = signal => ({
+  type: events.getP2PSignal,
+  signal,
+});
+
+const readyP2Pconnection = () => ({
+  type: events.readyP2Pconnection,
+});
+
+const sendMessagePeer = message => ({
+  type: events.sendMessagePeer,
+  message,
+});
+
+const pongPeer = time => ({
+  type: events.pongPeer,
+  time,
+});
+
 export {
   connect,
   connectPeer,
   setPeer,
   resetPeer,
+  connectP2P,
+  openConnection,
+  getP2PSignal,
+  readyP2Pconnection,
+  sendMessagePeer,
+  pongPeer,
 };

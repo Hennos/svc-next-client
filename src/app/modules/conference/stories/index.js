@@ -1,6 +1,8 @@
 import { events } from '../constants';
-import createConnection from './createConnection';
+import flowConnectionServer from './flowConnectionServer';
+import flowConnectionP2P from './flowConnectionP2P';
 
 export default [
-  [events.connect, createConnection],
+  [events.connect, flowConnectionServer],
+  [events.connectP2P, flowConnectionP2P],
 ];

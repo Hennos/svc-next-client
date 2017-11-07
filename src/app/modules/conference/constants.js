@@ -10,7 +10,17 @@ const events = {
 
   connect: '@SERVER/CONNECT',
   connectDone: '@SERVER/CONNECTED',
-  sendMessage: '@SERVER/MESSAGE',
+  sendMessage: '@SERVER/SEND_MESSAGE',
+
+  msgWebRTC: '@RTC/BASE',
+  getP2PSignal: '@P2P/GET_SIGNAL',
+  connectP2P: '@P2P/CONNECT',
+  connectPeer: '@P2P/CONNECT_PEER',
+  peerConnected: '@P2P/PEERS_CONNECTED',
+  openConnection: '@P2P/OPEN_CONNECTION',
+  readyP2Pconnection: '@P2P/CONNECTION_READY',
+  sendMessagePeer: '@P2P/SEND_MESSAGE',
+  pongPeer: 'P2P/PONG',
 };
 
 const stateKeys = {

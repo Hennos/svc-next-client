@@ -42,9 +42,12 @@ const sendMessagePeer = message => ({
   message,
 });
 
-const pongPeer = time => ({
+const askPeerDelay = () => ({
+  type: events.askPeerDelay,
+});
+
+const pongPeer = () => ({
   type: events.pongPeer,
-  time,
 });
 
 export {
@@ -57,5 +60,6 @@ export {
   getP2PSignal,
   readyP2Pconnection,
   sendMessagePeer,
+  askPeerDelay,
   pongPeer,
 };

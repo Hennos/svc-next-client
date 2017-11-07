@@ -6,6 +6,7 @@ const state = Immutable.Map([
     name: 'Борис',
   }],
   [stateKeys.users, Immutable.Map()],
+  [stateKeys.peerConnected, false],
 ]);
 
 export default state;

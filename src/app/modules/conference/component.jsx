@@ -4,6 +4,7 @@ import {
   connect as connectWithServer,
 } from './actions';
 import User from './components/Users';
+import AskDelayButton from './components/AskDelayButton';
 
 class ConferenceApp extends React.Component {
   render() {
@@ -12,6 +13,7 @@ class ConferenceApp extends React.Component {
     return (
       <div>
         <User />
+        <AskDelayButton />
       </div>
     );
   }

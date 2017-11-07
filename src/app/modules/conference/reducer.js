@@ -13,9 +13,14 @@ function handleResetPeer(state, { peer: id }) {
   return state.set(stateKeys.users, users);
 }
 
+function handleReadyP2PConnection(state) {
+  return state.set(stateKeys.peerConnected, true);
+}
+
 const workers = [
   [events.setPeer, handleSetPeer],
   [events.resetPeer, handleResetPeer],
+  [events.readyP2Pconnection, handleReadyP2PConnection],
 ];
 
 export default {

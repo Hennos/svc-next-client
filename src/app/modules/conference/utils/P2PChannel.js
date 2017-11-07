@@ -6,9 +6,13 @@ export default class P2PChannel extends Channel {
   }
 
   constructor(connection) {
+    const onMessageHandler = (callback) => {
+      connection.onmessage = message => callback(message);
+    };
+
     super({
       send: connection.send.bind(connection),
-      onmessage: connection.onmessage.bind(connection),
+      onmessage: onMessageHandler,
       close: connection.close.bind(connection),
     });
   }

@@ -47,12 +47,12 @@ export default class P2PConnecter {
     this.peer = null;
     this.channel = null;
 
-    signaling.onmessage(msgWebRTC, this.handleMessage);
+    this.onconnect = null;
 
-    this.sendSignal = (type, message = {}) => signaling.send(type, JSON.stringify(message));
+    this.sendSignal = (type, message = {}) => signaling.send(type, message);
   }
 
-  handleMessage(message) {
+  pushMessage(message) {
     const peer = message.id;
 
     if (!this.connection) {
@@ -91,9 +91,10 @@ export default class P2PConnecter {
     // #endregion
 
     if (this.connection != null) {
-      throw new Error(`P2PConnecter => createConnection(peer): is already connected with ${this.peer}`);
+      return false;
     }
 
+    this.peer = peer;
     this.isInitiator = initiator;
 
     this.connection = new RTCPeerConnection(ICEConfig);
@@ -102,7 +103,7 @@ export default class P2PConnecter {
 
       if (evt.candidate) {
         this.sendSignal(msgWebRTC, {
-          id: peer,
+          id: this.peer,
           candidate: evt.candidate,
         });
       }
@@ -111,13 +112,19 @@ export default class P2PConnecter {
       this.connection.createOffer()
       .then(offer => this.connection.setLocalDescription(offer))
       .then(() => this.sendSignal(msgWebRTC, {
-        id: peer,
+        id: this.peer,
         desc: this.connection.localDescription,
       }))
       .catch(this.logError);
     };
 
     console.log(`Created RTCPeerConnection for ${peer}`);
+
+    if (typeof this.onconnect === 'function') {
+      this.onconnect();
+    }
+
+    return true;
   }
 
   createDataChannel() {
@@ -129,9 +136,9 @@ export default class P2PConnecter {
       try {
         if (this.isInitiator) {
           this.channel = this.connection.createDataChannel('chat');
-          this.channel.onopen(() => {
+          this.channel.onopen = () => {
             resolve(this.channel);
-          });
+          };
         } else {
           this.connection.ondatachannel = (evt) => {
             this.channel = evt.channel;

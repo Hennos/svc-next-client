@@ -110,16 +110,15 @@ function subscribeP2PConnection(transport) {
 
   return subscribe(channel, (emit) => {
     channel.onmessage((event) => {
-      const { type, data } = JSON.parse(event.data);
+      const { type } = JSON.parse(event.data);
       switch (type) {
         case events.pingPeer:
           channel.send(JSON.stringify({
             type: events.pongPeer,
-            data: Date.now(),
           }));
           break;
         case events.pongPeer:
-          emit(pongPeer(data));
+          emit(pongPeer());
           break;
         default:
           break;

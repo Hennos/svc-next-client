@@ -5,7 +5,11 @@ import Transport from '../utils/Transport';
 import IOChannel from '../utils/IOChannel';
 import PeerData from '../utils/PeerData';
 
-import { setPeer, resetPeer } from '../actions';
+import {
+  setPeer,
+  resetPeer,
+  connectP2P,
+} from '../actions';
 import { events, stateKeys } from '../constants';
 
 function connect(client) {
@@ -19,7 +23,7 @@ function connect(client) {
       });
       const callee = PeerData.create({
         name: 'server',
-        address: 'http://localhost:3001/',
+        address: 'http://192.168.0.20:3002/',
       });
 
       transport.connect(caller, callee);
@@ -72,7 +76,7 @@ function* read(transport) {
 function* write(transport) {
   while (true) {
     const { message } = yield take(events.sendMessage);
-    transport.channel.emit(message.type, message.data);
+    transport.channel.send(message.type, message.data);
   }
 }
 
@@ -81,11 +85,12 @@ function* handleIO(transport) {
   yield fork(write, transport);
 }
 
-export default function* createConnection() {
+export default function* flowConnectionServer() {
   try {
     const client = yield select(state => state.conference.get(stateKeys.client));
     const transport = yield call(connect, client);
     yield fork(handleIO, transport);
+    yield put(connectP2P(transport.channel));
   } catch (error) {
     console.log(error.message);
   }

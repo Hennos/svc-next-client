@@ -11,6 +11,7 @@ const events = {
   connect: '@SERVER/CONNECT',
   connectDone: '@SERVER/CONNECTED',
   sendMessage: '@SERVER/SEND_MESSAGE',
+  pushDelay: '@SERVER/PUSH_DELAY',
 
   msgWebRTC: '@RTC/BASE',
   getP2PSignal: '@P2P/GET_SIGNAL',

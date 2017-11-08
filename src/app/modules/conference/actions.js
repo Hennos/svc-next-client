@@ -19,6 +19,11 @@ const resetPeer = peer => ({
   peer,
 });
 
+const sendMessage = message => ({
+  type: events.sendMessage,
+  message,
+});
+
 const connectP2P = signaling => ({
   type: events.connectP2P,
   signaling,
@@ -55,6 +60,7 @@ export {
   connectPeer,
   setPeer,
   resetPeer,
+  sendMessage,
   connectP2P,
   openConnection,
   getP2PSignal,

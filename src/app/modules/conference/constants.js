@@ -1,4 +1,6 @@
 const events = {
+  authorize: '@CLIENT/AUTHORIZE',
+
   sendPeerData: '@PEER/DATA',
 
   addClients: '@PEER/CLIENTS',
@@ -30,6 +32,7 @@ const stateKeys = {
   client: 'client',
   users: 'users',
   peerConnected: 'peerConnected',
+  authorized: 'authorized',
 };
 
 export { events, stateKeys };

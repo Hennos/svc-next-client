@@ -1,5 +1,10 @@
 import { events } from './constants';
 
+const authorize = name => ({
+  type: events.authorize,
+  name,
+});
+
 const connect = () => ({
   type: events.connect,
 });
@@ -56,6 +61,7 @@ const pongPeer = () => ({
 });
 
 export {
+  authorize,
   connect,
   connectPeer,
   setPeer,

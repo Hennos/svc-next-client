@@ -1,30 +1,55 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {
-  connect as connectWithServer,
-} from './actions';
-import User from './components/Users';
-import AskDelayButton from './components/AskDelayButton';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
-class ConferenceApp extends React.Component {
-  render() {
-    this.props.createConnection();
+import { stateKeys } from './constants';
+import Authorize from './components/Authorize';
+import ConferenceClient from './components/ConferenceClient';
 
-    return (
-      <div>
-        <User />
-        <AskDelayButton />
-      </div>
-    );
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
+function ConferenceApp({ match, authorized }) {
+  return (
+    <Switch>
+      <Redirect exact from={match.url} to={`${match.url}/authorized`} />
+      <Route
+        path={`${match.url}/authorize`}
+        render={props => (
+          !authorized ? (
+            <Authorize {...props} />
+          ) : (
+            <Redirect to={{
+              pathname: `${match.url}/authorized`,
+              state: { from: props.location },
+            }}/>
+          )
+        )}
+      />
+      <Route
+        path={`${match.url}/authorized`}
+        render={props => (
+          authorized ? (
+            <ConferenceClient {...props} />
+          ) : (
+            <Redirect to={{
+              pathname: `${match.url}/authorize`,
+              state: { from: props.location },
+            }}/>
+          )
+        )}
+      />
+    </Switch>
+  );
 }
 
-const mapDispatchToProps = dispatch => ({
-  createConnection: () => dispatch(connectWithServer()),
+ConferenceApp.propTypes = {
+  match: PropTypes.shape({
+    path: PropTypes.string,
+  }).isRequired,
+  authorized: PropTypes.bool.isRequired,
+};
+
+const mapStateToProps = state => ({
+  authorized: state.conference.get(stateKeys.authorized),
 });
 
-export default connect(null, mapDispatchToProps)(ConferenceApp);
+export default withRouter(connect(mapStateToProps)(ConferenceApp));

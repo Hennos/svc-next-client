@@ -4,15 +4,34 @@ import { connect } from 'react-redux';
 
 import { authorize } from '../actions';
 
-function Authorize({ onAuthorize }) {
-  return (
-    <div className="authorization">
-      <form onSubmit={onAuthorize}>
-        <p>Имя: <input type="text" name="client" /></p>
-        <p><input type="submit" value="Войти" /></p>
-      </form>
-    </div>
-  );
+class Authorize extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { name: '' };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({ name: event.target.value });
+  }
+
+  handleSubmit(event) {
+    this.props.onAuthorize(this.state.name);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <div className="authorization">
+        <form onSubmit={this.handleSubmit}>
+          <p>Имя: <input type="text" value={this.state.name} onChange={this.handleChange} /></p>
+          <p><input type="submit" value="Войти" /></p>
+        </form>
+      </div>
+    );
+  }
 }
 
 const mapDispatchToProps = dispatch => ({

@@ -1,5 +1,6 @@
 const events = {
   authorize: '@CLIENT/AUTHORIZE',
+  setClientData: '@CLIENT/SET_DATA',
 
   sendPeerData: '@PEER/DATA',
 
@@ -17,7 +18,6 @@ const events = {
 
   msgWebRTC: '@RTC/BASE',
   getP2PSignal: '@P2P/GET_SIGNAL',
-  connectP2P: '@P2P/CONNECT',
   connectPeer: '@P2P/CONNECT_PEER',
   peerConnected: '@P2P/PEERS_CONNECTED',
   openConnection: '@P2P/OPEN_CONNECTION',

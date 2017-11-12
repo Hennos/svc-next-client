@@ -1,6 +1,10 @@
 import { events, stateKeys } from './constants';
 import initialState from './state';
 
+function handleSetClientData(state, { client }) {
+  return state.set(stateKeys.client, client);
+}
+
 function handleSetPeer(state, { peer: { id, data } }) {
   const users = state.get(stateKeys.users).set(id, data);
 
@@ -18,6 +22,7 @@ function handleReadyP2PConnection(state) {
 }
 
 const workers = [
+  [events.setClientData, handleSetClientData],
   [events.setPeer, handleSetPeer],
   [events.resetPeer, handleResetPeer],
   [events.readyP2Pconnection, handleReadyP2PConnection],

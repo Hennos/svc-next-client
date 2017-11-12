@@ -1,4 +1,4 @@
-import { call, take, put, select, fork } from 'redux-saga/effects';
+import { call, take, put, fork } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import Transport from '../utils/Transport';
@@ -6,11 +6,13 @@ import IOChannel from '../utils/IOChannel';
 import PeerData from '../utils/PeerData';
 
 import {
+  setClientData,
   setPeer,
   resetPeer,
-  connectP2P,
+  connectDone,
+  pongServer,
 } from '../actions';
-import { events, stateKeys } from '../constants';
+import { events } from '../constants';
 
 function connect(client) {
   const transport = Transport.create((caller, callee) => IOChannel.create(caller, callee));
@@ -23,7 +25,7 @@ function connect(client) {
       });
       const callee = PeerData.create({
         name: 'server',
-        address: 'http://192.168.0.20:3002/',
+        address: '192.168.1.36:3002',
       });
 
       transport.connect(caller, callee);
@@ -46,21 +48,17 @@ function subscribe(transport) {
 
   return eventChannel((emit) => {
     channel.onmessage(events.addClients, (peers) => {
-      console.log(peers);
       peers.forEach(peer => emit(setPeer(peer)));
     });
     channel.onmessage(events.addPeer, (peer) => {
-      console.log(peer);
       emit(setPeer(peer));
     });
     channel.onmessage(events.leavePeer, (peer) => {
-      console.log(`peer ${peer} leave`);
       emit(resetPeer(peer));
     });
 
     return function unsubscribe() {
       transport.disconnect();
-      console.log('socket off');
     };
   });
 }
@@ -85,12 +83,12 @@ function* handleIO(transport) {
   yield fork(write, transport);
 }
 
-export default function* flowConnectionServer() {
+export default function* flowConnectionServer({ client }) {
   try {
-    const client = yield select(state => state.conference.get(stateKeys.client));
     const transport = yield call(connect, client);
     yield fork(handleIO, transport);
-    yield put(connectP2P(transport.channel));
+    yield put(setClientData(client));
+    yield put(connectDone(transport.channel));
   } catch (error) {
     console.log(error.message);
   }

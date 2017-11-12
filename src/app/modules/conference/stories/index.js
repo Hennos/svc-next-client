@@ -5,6 +5,6 @@ import pingPongTask from './pingPongTask';
 
 export default [
   [events.connect, flowConnectionServer],
-  [events.connectP2P, flowConnectionP2P],
+  [events.connectDone, flowConnectionP2P],
   [events.askPeerDelay, pingPongTask],
 ];

@@ -164,7 +164,7 @@ function* manageP2PConnection(signaling) {
 }
 // #endregion
 
-export default function* flowConnectionP2P({ signaling }) {
+export default function* flowConnectionP2P({ connection: signaling }) {
   yield fork(listenSignaling, signaling);
   yield fork(manageP2PConnection, signaling);
 }

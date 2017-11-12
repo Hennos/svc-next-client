@@ -5,8 +5,14 @@ const authorize = name => ({
   name,
 });
 
-const connect = () => ({
+const setClientData = client => ({
+  type: events.setClientData,
+  client,
+});
+
+const connect = client => ({
   type: events.connect,
+  client,
 });
 
 const connectPeer = peer => ({
@@ -29,9 +35,9 @@ const sendMessage = message => ({
   message,
 });
 
-const connectP2P = signaling => ({
-  type: events.connectP2P,
-  signaling,
+const connectDone = connection => ({
+  type: events.connectDone,
+  connection,
 });
 
 const openConnection = () => ({
@@ -62,12 +68,13 @@ const pongPeer = () => ({
 
 export {
   authorize,
+  setClientData,
   connect,
+  connectDone,
   connectPeer,
   setPeer,
   resetPeer,
   sendMessage,
-  connectP2P,
   openConnection,
   getP2PSignal,
   readyP2Pconnection,

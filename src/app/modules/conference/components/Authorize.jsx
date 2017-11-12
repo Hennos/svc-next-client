@@ -18,7 +18,9 @@ class Authorize extends React.Component {
   }
 
   handleSubmit(event) {
-    this.props.onAuthorize(this.state.name);
+    this.props.onAuthorize({
+      name: this.state.name,
+    });
     event.preventDefault();
   }
 

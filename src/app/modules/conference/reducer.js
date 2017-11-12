@@ -5,6 +5,10 @@ function handleSetClientData(state, { client }) {
   return state.set(stateKeys.client, client);
 }
 
+function handleAuthorizeDone(state) {
+  return state.set(stateKeys.authorized, true);
+}
+
 function handleSetPeer(state, { peer: { id, data } }) {
   const users = state.get(stateKeys.users).set(id, data);
 
@@ -23,6 +27,7 @@ function handleReadyP2PConnection(state) {
 
 const workers = [
   [events.setClientData, handleSetClientData],
+  [events.authorizeDone, handleAuthorizeDone],
   [events.setPeer, handleSetPeer],
   [events.resetPeer, handleResetPeer],
   [events.readyP2Pconnection, handleReadyP2PConnection],

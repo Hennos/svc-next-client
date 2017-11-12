@@ -1,8 +1,12 @@
 import { events } from './constants';
 
-const authorize = name => ({
+const authorize = client => ({
   type: events.authorize,
-  name,
+  client,
+});
+
+const authorizeDone = () => ({
+  type: events.authorizeDone,
 });
 
 const setClientData = client => ({
@@ -68,6 +72,7 @@ const pongPeer = () => ({
 
 export {
   authorize,
+  authorizeDone,
   setClientData,
   connect,
   connectDone,

@@ -1,5 +1,6 @@
 const events = {
   authorize: '@CLIENT/AUTHORIZE',
+  authorizeDone: '@CLIENT/AUTHORIZED',
   setClientData: '@CLIENT/SET_DATA',
 
   sendPeerData: '@PEER/DATA',

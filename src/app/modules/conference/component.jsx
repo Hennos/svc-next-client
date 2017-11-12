@@ -7,10 +7,16 @@ import { stateKeys } from './constants';
 import Authorize from './components/Authorize';
 import ConferenceClient from './components/ConferenceClient';
 
+// todo: добавить функцию, подчищающую слеши в url при редиректе, удаляя лишние
+
 function ConferenceApp({ match, authorized }) {
   return (
     <Switch>
-      <Redirect exact from={match.url} to={`${match.url}/authorized`} />
+      <Redirect
+        exact
+        from={match.url}
+        to={authorized ? `${match.url}/authorized` : `${match.url}/authorize`}
+      />
       <Route
         path={`${match.url}/authorize`}
         render={props => (

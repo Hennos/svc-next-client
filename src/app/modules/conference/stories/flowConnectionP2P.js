@@ -9,7 +9,6 @@ import PeerData from '../utils/PeerData';
 import { events, stateKeys } from '../constants';
 import {
   readyP2Pconnection,
-  pongPeer,
   getP2PSignal,
 } from '../actions';
 
@@ -112,14 +111,7 @@ function subscribeP2PConnection(transport) {
     channel.onmessage((event) => {
       const { type } = JSON.parse(event.data);
       switch (type) {
-        case events.pingPeer:
-          channel.send(JSON.stringify({
-            type: events.pongPeer,
-          }));
-          break;
-        case events.pongPeer:
-          emit(pongPeer());
-          break;
+        // Add message handlers with concrete type
         default:
           break;
       }

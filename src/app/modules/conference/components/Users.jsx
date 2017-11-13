@@ -1,26 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { stateKeys } from '../constants';
-import {
-  connectPeer as connectWithUser,
-} from '../actions';
+import PropTypes from 'prop-types';
 
-function Users({ users, createConnection }) {
+function Users({ users, onClick }) {
   return (
     <div>{
-        Object.keys(users).map(id => (
-          <button onClick={() => createConnection(id)} key={id}>{users[id].name}</button>
+        Object.entries(users).map(([id, user]) => (
+          <button onClick={() => onClick(id)} key={id}>{user.name}</button>
         ))
     }</div>
   );
 }
 
-const mapStateToProps = state => ({
-  users: state.conference.get(stateKeys.users).toObject(),
-});
+Users.propTypes = {
+  users: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
+};
 
-const mapDispatchToProps = dispatch => ({
-  createConnection: user => dispatch(connectWithUser(user)),
-});
+Users.defaultProps = {
+  onClick: () => {},
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Users);
+export default Users;

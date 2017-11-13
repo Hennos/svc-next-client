@@ -1,14 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import Users from './Users';
 
-function ConferenceClient() {
+import { stateKeys } from '../constants';
+import {
+  connectPeer,
+} from '../actions';
+
+function ConferenceClient({ users, createConnection }) {
   return (
     <div>
-      <Users />
+      <Users users={users} onClick={createConnection} />
     </div>
   );
 }
 
-export default connect()(ConferenceClient);
+ConferenceClient.propTypes = {
+  users: PropTypes.object.isRequired,
+  createConnection: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  users: state.conference.get(stateKeys.users).toObject(),
+});
+
+const mapDispatchToProps = dispatch => ({
+  createConnection: user => dispatch(connectPeer(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ConferenceClient);

@@ -11,8 +11,8 @@ import {
 
 function ConferenceClient({ users, createConnection }) {
   return (
-    <div>
-      <Users users={users} onClick={createConnection} />
+    <div className="client">
+      <Users users={users} onChooseUser={createConnection} />
     </div>
   );
 }

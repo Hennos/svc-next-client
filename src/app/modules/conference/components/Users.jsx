@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Users({ users, onClick }) {
+function Users({ users, onChooseUser }) {
   return (
-    <div>{
+    <div className="users">{
         Object.entries(users).map(([id, user]) => (
           <button onClick={() => onClick(id)} key={id}>{user.name}</button>
         ))
@@ -13,11 +13,11 @@ function Users({ users, onClick }) {
 
 Users.propTypes = {
   users: PropTypes.object.isRequired,
-  onClick: PropTypes.func,
+  onChooseUser: PropTypes.func,
 };
 
 Users.defaultProps = {
-  onClick: () => {},
+  onChooseUser: () => {},
 };
 
 export default Users;

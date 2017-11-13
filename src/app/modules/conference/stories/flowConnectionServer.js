@@ -10,7 +10,6 @@ import {
   setPeer,
   resetPeer,
   connectDone,
-  pongServer,
 } from '../actions';
 import { events } from '../constants';
 
@@ -25,7 +24,7 @@ function connect(client) {
       });
       const callee = PeerData.create({
         name: 'server',
-        address: '192.168.1.36:3002',
+        address: 'localhost:3002',
       });
 
       transport.connect(caller, callee);

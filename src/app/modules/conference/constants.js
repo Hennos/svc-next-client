@@ -15,7 +15,6 @@ const events = {
   connect: '@SERVER/CONNECT',
   connectDone: '@SERVER/CONNECTED',
   sendMessage: '@SERVER/SEND_MESSAGE',
-  pushDelay: '@SERVER/PUSH_DELAY',
 
   msgWebRTC: '@RTC/BASE',
   getP2PSignal: '@P2P/GET_SIGNAL',
@@ -24,9 +23,6 @@ const events = {
   openConnection: '@P2P/OPEN_CONNECTION',
   readyP2Pconnection: '@P2P/CONNECTION_READY',
   sendMessagePeer: '@P2P/SEND_MESSAGE',
-  askPeerDelay: '@P2P/ASK_DELAY',
-  pingPeer: '@P2P/PING',
-  pongPeer: '@P2P/PONG',
 };
 
 const stateKeys = {

@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import User from './User';
+
 function Users({ users, onChooseUser }) {
   return (
     <div className="users">{
         Object.entries(users).map(([id, user]) => (
-          <button onClick={() => onClick(id)} key={id}>{user.name}</button>
+          <User desc={user} onClick={() => onChooseUser(id)} key={id} />
         ))
     }</div>
   );

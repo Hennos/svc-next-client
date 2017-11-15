@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-function User({ desc, onChoose }) {
+import './style.css';
+
+function User({ className, desc, onChoose }) {
   return (
-    <div className="user">
-      <button onClick={onChoose}>{desc.name}</button>
+    <div className={classNames(className, 'user')} role="button" onClick={() => {}} >
+      <p>{desc.name}</p>
     </div>
   );
 }
 
 User.propTypes = {
+  className: PropTypes.string,
   desc: PropTypes.shape({
     name: PropTypes.string,
   }).isRequired,
@@ -17,6 +21,7 @@ User.propTypes = {
 };
 
 User.defaultProps = {
+  className: '',
   onChoose: () => {},
 };
 

@@ -1,0 +1,13 @@
+.users {
+
+}
+
+.users-element {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-bottom: 1px solid #e7e8ec;
+}
+
+.users-element:hover {
+  background-color: #e1e5eb;
+}

@@ -5,7 +5,7 @@ import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 
 import { stateKeys } from './constants';
 import Authorize from './components/Authorize';
-import ConferenceClient from './components/ConferenceClient';
+import Client from './components/Client';
 
 // todo: добавить функцию, подчищающую слеши в url при редиректе, удаляя лишние
 
@@ -34,7 +34,7 @@ function ConferenceApp({ match, authorized }) {
         path={`${match.url}/authorized`}
         render={props => (
           authorized ? (
-            <ConferenceClient {...props} />
+            <Client {...props} />
           ) : (
             <Redirect to={{
               pathname: `${match.url}/authorize`,

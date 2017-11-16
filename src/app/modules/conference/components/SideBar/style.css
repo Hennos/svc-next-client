@@ -1,0 +1,11 @@
+.side-bar {
+  display: flex;
+  flex-direction: column;
+}
+
+.side-bar-title {
+  height: 40px;
+  line-height: 40px;
+  background-color: #648ebb;
+  color: white;
+}

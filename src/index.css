@@ -25,6 +25,14 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 
+button, input[type="submit"] {
+	border: none;
+	font: inherit;
+	background-image: none;
+	background-color: transparent;
+	box-shadow: none;
+}
+
 body {
 	line-height: 1;
 }

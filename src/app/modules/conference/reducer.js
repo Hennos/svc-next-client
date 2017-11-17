@@ -9,13 +9,13 @@ function handleAuthorizeDone(state) {
   return state.set(stateKeys.authorized, true);
 }
 
-function handleSetPeer(state, { peer: { id, data } }) {
+function handleSetUser(state, { peer: { id, data } }) {
   const users = state.get(stateKeys.users).set(id, data);
 
   return state.set(stateKeys.users, users);
 }
 
-function handleResetPeer(state, { peer: id }) {
+function handleResetUser(state, { peer: id }) {
   const users = state.get(stateKeys.users).delete(id);
 
   return state.set(stateKeys.users, users);
@@ -28,8 +28,8 @@ function handleReadyP2PConnection(state) {
 const workers = [
   [events.setClientData, handleSetClientData],
   [events.authorizeDone, handleAuthorizeDone],
-  [events.setPeer, handleSetPeer],
-  [events.resetPeer, handleResetPeer],
+  [events.setPeer, handleSetUser],
+  [events.resetPeer, handleResetUser],
   [events.readyP2Pconnection, handleReadyP2PConnection],
 ];
 

@@ -17,7 +17,8 @@ const events = {
   sendMessage: '@SERVER/SEND_MESSAGE',
 
   msgWebRTC: '@RTC/BASE',
-  getP2PSignal: '@P2P/GET_SIGNAL',
+  getP2PSignal: '@RTC/GET_SIGNAL',
+
   connectPeer: '@P2P/CONNECT_PEER',
   peerConnected: '@P2P/PEERS_CONNECTED',
   openConnection: '@P2P/OPEN_CONNECTION',

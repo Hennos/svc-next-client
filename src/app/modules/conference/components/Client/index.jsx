@@ -14,13 +14,28 @@ import {
   connectPeer,
 } from '../../actions';
 
-function Client({ className, client, users, createConnection }) {
+function Client({ className, client, connected, users, createConnection }) {
+  const connections = connected ? (
+    Object.keys(users)
+      .filter(id => Object.is(id, connected))
+      .map(id => ({
+        id,
+        ...users[id],
+      }))
+  ) : [];
   return (
     <div className={classNames(className, 'client')}>
       <SideBar className="client-side-bar" client={client}>
-        <Users users={users} onChooseUser={createConnection} />
+        <Users
+          users={users}
+          choosed={connected}
+          onChooseUser={createConnection}
+        />
       </SideBar>
-      <CallingArea className="client-calling-area" />
+      <CallingArea
+        className="client-calling-area"
+        connections={connections}
+      />
     </div>
   );
 }
@@ -31,6 +46,10 @@ Client.propTypes = {
     name: PropTypes.string,
   }).isRequired,
   users: PropTypes.object.isRequired,
+  connected: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+  ]).isRequired,
   createConnection: PropTypes.func.isRequired,
 };
 
@@ -41,6 +60,7 @@ Client.defaultProps = {
 const mapStateToProps = state => ({
   client: state.conference.get(stateKeys.client),
   users: state.conference.get(stateKeys.users).toObject(),
+  connected: state.conference.get(stateKeys.connected),
 });
 
 const mapDispatchToProps = dispatch => ({

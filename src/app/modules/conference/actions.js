@@ -53,8 +53,14 @@ const getP2PSignal = signal => ({
   signal,
 });
 
-const readyP2Pconnection = () => ({
-  type: events.readyP2Pconnection,
+const connectP2PDone = connected => ({
+  type: events.connectP2PDone,
+  connected,
+});
+
+const setConnectedPeer = connected => ({
+  type: events.setConnectedPeer,
+  connected,
 });
 
 const sendMessagePeer = message => ({
@@ -74,6 +80,7 @@ export {
   sendMessage,
   openConnection,
   getP2PSignal,
-  readyP2Pconnection,
+  connectP2PDone,
+  setConnectedPeer,
   sendMessagePeer,
 };

@@ -5,7 +5,7 @@ const state = Immutable.Map([
   [stateKeys.authorized, false],
   [stateKeys.client, null],
   [stateKeys.users, Immutable.Map()],
-  [stateKeys.peerConnected, false],
+  [stateKeys.connected, false],
 ]);
 
 export default state;

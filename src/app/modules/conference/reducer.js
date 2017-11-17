@@ -17,12 +17,19 @@ function handleSetUser(state, { peer: { id, data } }) {
 
 function handleResetUser(state, { peer: id }) {
   const users = state.get(stateKeys.users).delete(id);
-
-  return state.set(stateKeys.users, users);
+  const connected = state.get(stateKeys.connected);
+  return Object.is(id, connected) ? (
+    state
+      .set(stateKeys.users, users)
+      .set(stateKeys.connected, false)
+  ) : (
+    state
+      .set(stateKeys.users, users)
+  );
 }
 
-function handleReadyP2PConnection(state) {
-  return state.set(stateKeys.peerConnected, true);
+function handleSetConnectedPeer(state, { connected }) {
+  return state.set(stateKeys.connected, connected);
 }
 
 const workers = [
@@ -30,7 +37,7 @@ const workers = [
   [events.authorizeDone, handleAuthorizeDone],
   [events.setPeer, handleSetUser],
   [events.resetPeer, handleResetUser],
-  [events.readyP2Pconnection, handleReadyP2PConnection],
+  [events.setConnectedPeer, handleSetConnectedPeer],
 ];
 
 export default {

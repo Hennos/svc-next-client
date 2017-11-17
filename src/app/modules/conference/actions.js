@@ -62,14 +62,6 @@ const sendMessagePeer = message => ({
   message,
 });
 
-const askPeerDelay = () => ({
-  type: events.askPeerDelay,
-});
-
-const pongPeer = () => ({
-  type: events.pongPeer,
-});
-
 export {
   authorize,
   authorizeDone,
@@ -84,6 +76,4 @@ export {
   getP2PSignal,
   readyP2Pconnection,
   sendMessagePeer,
-  askPeerDelay,
-  pongPeer,
 };

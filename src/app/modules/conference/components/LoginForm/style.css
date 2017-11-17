@@ -1,8 +1,8 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 210px;
-  height: 200px;
+  width: 220px;
+  height: 210px;
   padding: 10px 20px;
   border-radius: 5px;
 }

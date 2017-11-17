@@ -24,14 +24,15 @@ const events = {
   openConnection: '@P2P/OPEN_CONNECTION',
   connectP2PDone: '@P2P/CONNECTION_READY',
   setConnectedPeer: '@P2P/SET_CONNECTED',
+
   sendMessagePeer: '@P2P/SEND_MESSAGE',
 };
 
 const stateKeys = {
+  authorized: 'authorized',
   client: 'client',
   users: 'users',
   connected: 'connected',
-  authorized: 'authorized',
 };
 
 export { events, stateKeys };

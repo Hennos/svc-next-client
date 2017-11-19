@@ -1,5 +1,8 @@
 .connected {
+  width: 298px;
+  height: 298px;
   border-radius: 5px;
+  border: 1px solid #e1e5eb;  
 }
 
 .connected video {

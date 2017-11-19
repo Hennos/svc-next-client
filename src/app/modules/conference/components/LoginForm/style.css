@@ -1,10 +1,11 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 220px;
-  height: 210px;
+  width: 218px;
+  height: 208px;
   padding: 10px 20px;
   border-radius: 5px;
+  border: 1px solid #e1e5eb;  
 }
 
 .login-form-header {

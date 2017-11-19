@@ -4,9 +4,18 @@ import classNames from 'classnames';
 
 import './style.css';
 
+import LoadingIcon from '../LoadingIcon';
+
+const loading = true;
+
 function Connected({ className, desc }) {
   return (
     <div className={classNames(className, 'connected')}>
+      {loading && (
+        <div className="loading-area">
+          <LoadingIcon />
+        </div>
+      )}
       <video>
         <source src="" />
       </video>

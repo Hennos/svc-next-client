@@ -5,4 +5,8 @@
 .connected video {
   width: 320px;
   height: 240px;
+.connected hr {
+  height: 2px;
+  margin: 10px 0;
+  background-color: rgb(191, 191, 191);
 }

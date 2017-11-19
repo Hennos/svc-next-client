@@ -10,6 +10,7 @@ function Connected({ className, desc }) {
       <video>
         <source src="" />
       </video>
+      <hr />
     </div>
   );
 }

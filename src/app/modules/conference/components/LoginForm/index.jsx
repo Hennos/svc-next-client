@@ -31,6 +31,7 @@ class LoginForm extends React.Component {
         <p className="login-form-header">
           Вход в систему
         </p>
+        <hr />
         <p className="login-form-input">
           <input
             type="text"

@@ -8,6 +8,7 @@ import PeerData from '../utils/PeerData';
 
 import { events, stateKeys } from '../constants';
 import {
+  connecterCreated,
   connectP2PDone,
   getP2PSignal,
 } from '../actions';
@@ -62,7 +63,6 @@ function* openP2PConnection(connecter) {
     connection: take(events.connectPeer),
     cancel: take(events.openConnection),
   });
-
   if (connection) {
     yield call(initP2PConnection, connecter, connection.peer);
   }
@@ -149,6 +149,7 @@ function* openDataChannelConnection(connecter) {
 
 function* manageP2PConnection(signaling) {
   const connecter = yield call(createConnecter, signaling);
+  yield put(connecterCreated(connecter));
   yield fork(openP2PConnection, connecter);
   yield fork(manageMessageP2PConnection, connecter);
   yield call(catchCreateConnection, connecter);

@@ -44,6 +44,11 @@ const connectDone = connection => ({
   connection,
 });
 
+const connecterCreated = connecter => ({
+  type: events.connecterCreated,
+  connecter,
+});
+
 const openConnection = () => ({
   type: events.openConnection,
 });
@@ -68,6 +73,11 @@ const sendMessagePeer = message => ({
   message,
 });
 
+const videoAreaReady = id => ({
+  type: events.videoAreaReady,
+  id,
+});
+
 export {
   authorize,
   authorizeDone,
@@ -80,7 +90,9 @@ export {
   sendMessage,
   openConnection,
   getP2PSignal,
+  connecterCreated,
   connectP2PDone,
   setConnectedPeer,
   sendMessagePeer,
+  videoAreaReady,
 };

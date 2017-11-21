@@ -9,5 +9,5 @@ export default [
   [events.authorize, flowAuthorization],
   [events.connect, flowConnectionServer],
   [events.connectDone, flowConnectionP2P],
-  [events.connectP2PDone, flowConnectionMP2P],
+  [events.connecterCreated, flowConnectionMP2P],
 ];

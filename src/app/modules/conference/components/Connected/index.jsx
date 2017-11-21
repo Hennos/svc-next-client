@@ -1,27 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
 
 import './style.css';
 
 import LoadingIcon from '../LoadingIcon';
 
-const loading = true;
+import { videoAreaReady } from '../../actions';
 
-function Connected({ className, desc }) {
-  return (
-    <div className={classNames(className, 'connected')}>
-      {loading && (
-        <div className="loading-area">
-          <LoadingIcon />
-        </div>
-      )}
-      <video>
-        <source src="" />
-      </video>
-      <hr />
-    </div>
-  );
+const loaded = true;
+
+class Connected extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.areaId = `area-${this.props.desc.name}`;
+  }
+
+  componentDidMount() {
+    this.props.sendReadyVideoArea(this.areaId);
+  }
+
+  render() {
+    const { className, desc } = this.props;
+    return (
+      <div className={classNames(className, 'connected')}>
+        {loaded ? (
+          <video className="area" id={this.areaId} />
+        ) : (
+          <div className="area">
+            <LoadingIcon />
+          </div>
+        )}
+        <hr />
+      </div>
+    );
+  }
 }
 
 Connected.propTypes = {
@@ -29,10 +44,15 @@ Connected.propTypes = {
   desc: PropTypes.shape({
     name: PropTypes.string,
   }).isRequired,
+  sendReadyVideoArea: PropTypes.func.isRequired,
 };
 
 Connected.defaultProps = {
   className: '',
 };
 
-export default Connected;
+const mapDispatchToProps = dispatch => ({
+  sendReadyVideoArea: videoId => dispatch(videoAreaReady(videoId)),
+});
+
+export default connect(null, mapDispatchToProps)(Connected);

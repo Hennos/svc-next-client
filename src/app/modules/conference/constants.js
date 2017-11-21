@@ -21,11 +21,14 @@ const events = {
 
   connectPeer: '@P2P/CONNECT_PEER',
   peerConnected: '@P2P/PEERS_CONNECTED',
+  connecterCreated: '@P2P/CONNECTER',
   openConnection: '@P2P/OPEN_CONNECTION',
   connectP2PDone: '@P2P/CONNECTION_READY',
   setConnectedPeer: '@P2P/SET_CONNECTED',
 
   sendMessagePeer: '@P2P/SEND_MESSAGE',
+
+  videoAreaReady: '@MP2P/VIDEO_AREA',
 };
 
 const stateKeys = {

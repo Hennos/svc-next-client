@@ -4,9 +4,13 @@ import classNames from 'classnames';
 
 import './style.css';
 
-function User({ className, desc, onChoose }) {
+function User({ className, desc, choosed, onChoose }) {
   return (
-    <div className={classNames(className, 'user')} role="button" onClick={() => {}} >
+    <div
+      className={classNames(className, 'user', { 'user-choosed': choosed })}
+      role="button"
+      onClick={onChoose}
+    >
       <p>{desc.name}</p>
     </div>
   );
@@ -17,11 +21,13 @@ User.propTypes = {
   desc: PropTypes.shape({
     name: PropTypes.string,
   }).isRequired,
+  choosed: PropTypes.bool,
   onChoose: PropTypes.func,
 };
 
 User.defaultProps = {
   className: '',
+  choosed: false,
   onChoose: () => {},
 };
 

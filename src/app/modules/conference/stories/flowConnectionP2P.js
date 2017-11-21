@@ -8,7 +8,7 @@ import PeerData from '../utils/PeerData';
 
 import { events, stateKeys } from '../constants';
 import {
-  readyP2Pconnection,
+  connectP2PDone,
   getP2PSignal,
 } from '../actions';
 
@@ -144,7 +144,7 @@ function* openDataChannelConnection(connecter) {
   const client = yield select(state => state.conference.get(stateKeys.client));
   const transport = yield call(connect, client, connecter);
   yield fork(handleIOConnection, transport);
-  yield put(readyP2Pconnection());
+  yield put(connectP2PDone(connecter.peer));
 }
 
 function* manageP2PConnection(signaling) {

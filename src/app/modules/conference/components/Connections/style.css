@@ -1,0 +1,11 @@
+.connections {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.connections-elements {
+  margin: 10px;
+  box-shadow: 2px 0 15px rgba(19, 18, 31, 0.19), 0 3px 6px rgba(0,0,0,0.23);
+}

@@ -1,17 +1,21 @@
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 210px;
-  height: 200px;
+  width: 218px;
+  height: 208px;
   padding: 10px 20px;
   border-radius: 5px;
+  border: 1px solid #e1e5eb;  
 }
 
 .login-form-header {
-  height: 40px;
-  line-height: 40px;
+  height: 2em;
+  line-height: 2em;
   font-size: 20px;
-  border-bottom: 1px solid rgb(142, 142, 142);
+}
+
+.login-form hr {
+  background-color: rgb(142, 142, 142);
 }
 
 .login-form-input {

@@ -17,19 +17,22 @@ const events = {
   sendMessage: '@SERVER/SEND_MESSAGE',
 
   msgWebRTC: '@RTC/BASE',
-  getP2PSignal: '@P2P/GET_SIGNAL',
+  getP2PSignal: '@RTC/GET_SIGNAL',
+
   connectPeer: '@P2P/CONNECT_PEER',
   peerConnected: '@P2P/PEERS_CONNECTED',
   openConnection: '@P2P/OPEN_CONNECTION',
-  readyP2Pconnection: '@P2P/CONNECTION_READY',
+  connectP2PDone: '@P2P/CONNECTION_READY',
+  setConnectedPeer: '@P2P/SET_CONNECTED',
+
   sendMessagePeer: '@P2P/SEND_MESSAGE',
 };
 
 const stateKeys = {
+  authorized: 'authorized',
   client: 'client',
   users: 'users',
-  peerConnected: 'peerConnected',
-  authorized: 'authorized',
+  connected: 'connected',
 };
 
 export { events, stateKeys };

@@ -53,21 +53,19 @@ const getP2PSignal = signal => ({
   signal,
 });
 
-const readyP2Pconnection = () => ({
-  type: events.readyP2Pconnection,
+const connectP2PDone = connected => ({
+  type: events.connectP2PDone,
+  connected,
+});
+
+const setConnectedPeer = connected => ({
+  type: events.setConnectedPeer,
+  connected,
 });
 
 const sendMessagePeer = message => ({
   type: events.sendMessagePeer,
   message,
-});
-
-const askPeerDelay = () => ({
-  type: events.askPeerDelay,
-});
-
-const pongPeer = () => ({
-  type: events.pongPeer,
 });
 
 export {
@@ -82,8 +80,7 @@ export {
   sendMessage,
   openConnection,
   getP2PSignal,
-  readyP2Pconnection,
+  connectP2PDone,
+  setConnectedPeer,
   sendMessagePeer,
-  askPeerDelay,
-  pongPeer,
 };

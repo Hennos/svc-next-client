@@ -1,9 +1,15 @@
 .user {
   height: 40px;
-  line-height: 40px;
+  outline: none;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 
 .user:hover {
+  background-color: #e1e5eb;
+}
+
+.user-choosed {
   background-color: #e1e5eb;
 }

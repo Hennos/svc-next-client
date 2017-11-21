@@ -6,10 +6,6 @@ const ICEConfig = {
   }, {
     url: 'stun:stun1.l.google.com:19302',
   }, {
-    url: 'stun:stun2.l.google.com:19302',
-  }, {
-    url: 'stun:stun3.l.google.com:19302',
-  }, {
     url: 'stun:stun4.l.google.com:19302',
   }, {
     url: 'turn:numb.viagenie.ca',
@@ -19,15 +15,10 @@ const ICEConfig = {
     url: 'turn:192.158.29.39:3478?transport=udp',
     credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
     username: '28224511:1379330808',
-  }, {
-    url: 'turn:192.158.29.39:3478?transport=tcp',
-    credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-    username: '28224511:1379330808',
   }],
 };
 
 const msgWebRTC = '@RTC/BASE';
-
 export default class P2PConnecter {
   static create(signaling) {
     return new P2PConnecter(signaling);
@@ -48,6 +39,7 @@ export default class P2PConnecter {
     this.channel = null;
 
     this.onconnect = null;
+    this.onstream = null;
 
     this.sendSignal = (type, message = {}) => signaling.send(type, message);
   }
@@ -63,17 +55,17 @@ export default class P2PConnecter {
       const desc = message.desc;
       if (desc.type === 'offer') {
         this.connection
-        .setRemoteDescription(desc)
+        .setRemoteDescription(new RTCSessionDescription(desc))
         .then(() => this.sendAnswer(peer))
         .catch(this.logError);
       } else {
         this.connection
-        .setRemoteDescription(desc)
+        .setRemoteDescription(new RTCSessionDescription(desc))
         .catch(this.logError);
       }
     } else {
       this.connection
-      .addIceCandidate(message.candidate)
+      .addIceCandidate(new RTCIceCandidate(message.candidate))
       .catch(this.logError);
     }
   }
@@ -99,7 +91,7 @@ export default class P2PConnecter {
 
     this.connection = new RTCPeerConnection(ICEConfig);
     this.connection.onicecandidate = (evt) => {
-      console.log('icecandidate event: ', evt);
+      console.log('icecandidate event: ', evt.candidate);
 
       if (evt.candidate) {
         this.sendSignal(msgWebRTC, {
@@ -116,6 +108,15 @@ export default class P2PConnecter {
         desc: this.connection.localDescription,
       }))
       .catch(this.logError);
+    };
+    this.connection.onaddstream = (evt) => {
+      console.log(evt);
+      if (!this.remoteStream) {
+        this.remoteStream = evt.stream;
+        if (typeof this.onstream === 'function') {
+          this.onstream(this.remoteStream);
+        }
+      }
     };
 
     console.log(`Created RTCPeerConnection for ${peer}`);
@@ -151,6 +152,18 @@ export default class P2PConnecter {
     });
   }
 
+  setMediaStream() {
+    if (this.connection === null) {
+      throw new Error('P2PConnecter => setMediaStream(): connection should be created before calling method');
+    }
+
+    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+      .then((stream) => {
+        this.connection.addStream(stream);
+      })
+    .catch(this.logError);
+  }
+
   sendAnswer(peer) {
     this.connection.createAnswer()
       .then(answer => this.connection.setLocalDescription(answer))
@@ -163,6 +176,5 @@ export default class P2PConnecter {
 
   logError(error) {
     console.log(`${error.name}: ${error.message}`);
-    throw error;
   }
 }

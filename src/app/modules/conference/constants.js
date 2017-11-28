@@ -35,7 +35,7 @@ const stateKeys = {
   authorized: 'authorized',
   client: 'client',
   users: 'users',
-  connected: 'connected',
+  connections: 'connections',
 };
 
 export { events, stateKeys };

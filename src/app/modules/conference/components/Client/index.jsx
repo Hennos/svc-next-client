@@ -14,27 +14,22 @@ import {
   connectPeer,
 } from '../../actions';
 
-function Client({ className, client, connected, users, createConnection }) {
-  const connections = connected ? (
-    Object.keys(users)
-      .filter(id => Object.is(id, connected))
-      .map(id => ({
-        id,
-        ...users[id],
-      }))
-  ) : [];
+function Client({ className, client, connections, users, createConnection }) {
   return (
     <div className={classNames(className, 'client')}>
       <SideBar className="client-side-bar" client={client}>
         <Users
           users={users}
-          choosed={connected}
+          choosed={connections.length === 0}
           onChooseUser={createConnection}
         />
       </SideBar>
       <CallingArea
         className="client-calling-area"
-        connections={connections}
+        connections={connections.map(id => ({
+          id,
+          ...users[id],
+        }))}
       />
     </div>
   );
@@ -46,10 +41,7 @@ Client.propTypes = {
     name: PropTypes.string,
   }).isRequired,
   users: PropTypes.object.isRequired,
-  connected: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.string,
-  ]).isRequired,
+  connections: PropTypes.arrayOf(PropTypes.string).isRequired,
   createConnection: PropTypes.func.isRequired,
 };
 
@@ -60,7 +52,7 @@ Client.defaultProps = {
 const mapStateToProps = state => ({
   client: state.conference.get(stateKeys.client),
   users: state.conference.get(stateKeys.users).toObject(),
-  connected: state.conference.get(stateKeys.connected),
+  connections: state.conference.get(stateKeys.connections).toArray(),
 });
 
 const mapDispatchToProps = dispatch => ({

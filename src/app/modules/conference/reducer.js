@@ -17,19 +17,19 @@ function handleSetUser(state, { peer: { id, data } }) {
 
 function handleResetUser(state, { peer: id }) {
   const users = state.get(stateKeys.users).delete(id);
-  const connected = state.get(stateKeys.connected);
-  return Object.is(id, connected) ? (
-    state
-      .set(stateKeys.users, users)
-      .set(stateKeys.connected, false)
-  ) : (
-    state
-      .set(stateKeys.users, users)
-  );
+  const updatedConnections = state
+    .get(stateKeys.connections)
+    .filterNot(connected => Object.is(connected, id));
+  return state
+    .set(stateKeys.users, users)
+    .set(stateKeys.connections, updatedConnections);
 }
 
 function handleSetConnectedPeer(state, { connected }) {
-  return state.set(stateKeys.connected, connected);
+  const updatedConnections = state
+    .get(stateKeys.connections)
+    .push(connected);
+  return state.set(stateKeys.connections, updatedConnections);
 }
 
 const workers = [

@@ -17,6 +17,11 @@ function catchGettingStream(connecter) {
 function setVideoAreaSrc(id, stream) {
   const videoArea = document.getElementById(id);
   videoArea.srcObject = stream;
+  return new Promise((resolve) => {
+    videoArea.onload(() => {
+      resolve();
+    });
+  });
 }
 
 function setLocalStream(connecter) {

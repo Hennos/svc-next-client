@@ -78,6 +78,12 @@ const videoAreaReady = id => ({
   id,
 });
 
+const sendRemoteStreamURL = (id, url) => ({
+  type: events.sendRemoteStreamURL,
+  id,
+  url,
+});
+
 export {
   authorize,
   authorizeDone,
@@ -95,4 +101,5 @@ export {
   setConnectedPeer,
   sendMessagePeer,
   videoAreaReady,
+  sendRemoteStreamURL,
 };

@@ -3,7 +3,10 @@ import { eventChannel } from 'redux-saga';
 
 import { events } from '../constants';
 
-import { setConnectedPeer } from '../actions';
+import {
+  setConnectedPeer,
+  sendRemoteStreamURL,
+} from '../actions';
 
 function catchGettingStream(connecter) {
   return eventChannel((emit) => {
@@ -14,34 +17,29 @@ function catchGettingStream(connecter) {
   });
 }
 
-function setVideoAreaSrc(id, stream) {
-  const videoArea = document.getElementById(id);
-  videoArea.srcObject = stream;
-  return new Promise((resolve) => {
-    videoArea.onload(() => {
-      resolve();
-    });
-  });
+function createRemoteStreamURL(stream) {
+  const remoteStreamURL = URL.createObjectURL(stream);
+  return remoteStreamURL;
 }
 
 function setLocalStream(connecter) {
   connecter.setMediaStream();
 }
 
-function* handleRemoteStream(connecter, area) {
+function* handleRemoteStream(connecter) {
   const channel = yield call(catchGettingStream, connecter);
   const remoteStream = yield take(channel);
   if (!connecter.isInitiator) {
     yield call(setLocalStream, connecter);
   }
-  yield call(setVideoAreaSrc, area, remoteStream);
+  const remoteStreamURL = yield call(createRemoteStreamURL, remoteStream);
+  yield put(sendRemoteStreamURL(connecter.peer, remoteStreamURL));
 }
 
 export default function* flowConnectionMP2P({ connecter }) {
   const { connected } = yield take(events.connectP2PDone);
   yield put(setConnectedPeer(connected));
-  const { id: videoAreaId } = yield take(events.videoAreaReady);
-  yield fork(handleRemoteStream, connecter, videoAreaId);
+  yield fork(handleRemoteStream, connecter);
   if (connecter.isInitiator) {
     yield call(setLocalStream, connecter);
   }

@@ -29,6 +29,7 @@ const events = {
   sendMessagePeer: '@P2P/SEND_MESSAGE',
 
   videoAreaReady: '@MP2P/VIDEO_AREA',
+  sendRemoteStreamURL: '@MP2P/REMOTE_STREAM_URL',
 };
 
 const stateKeys = {

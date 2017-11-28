@@ -12,7 +12,8 @@ function handleAuthorizeDone(state) {
 }
 
 function handleSetUser(state, { peer: { id, data } }) {
-  const updatedUsers = state.get(stateKeys.users).set(id, data);
+  const newUser = Immutable.Map(data);
+  const updatedUsers = state.get(stateKeys.users).set(id, newUser);
   return state.set(stateKeys.users, updatedUsers);
 }
 
@@ -33,12 +34,22 @@ function handleSetConnectedPeer(state, { connected }) {
   return state.set(stateKeys.connections, updatedConnections);
 }
 
+function handleRemoteStreamURL(state, { id, url }) {
+  const oldUsers = state.get(stateKeys.users);
+  const updatedUser = oldUsers
+    .get(id)
+    .set('url', url);
+  const updatedUsers = oldUsers.set(id, updatedUser);
+  return state.set(stateKeys.users, updatedUsers);
+}
+
 const workers = [
   [events.setClientData, handleSetClientData],
   [events.authorizeDone, handleAuthorizeDone],
   [events.setPeer, handleSetUser],
   [events.resetPeer, handleResetUser],
   [events.setConnectedPeer, handleSetConnectedPeer],
+  [events.sendRemoteStreamURL, handleRemoteStreamURL],
 ];
 
 export default {

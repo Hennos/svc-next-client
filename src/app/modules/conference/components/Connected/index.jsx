@@ -9,34 +9,22 @@ import LoadingIcon from '../LoadingIcon';
 
 import { videoAreaReady } from '../../actions';
 
-const loaded = true;
-
-class Connected extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.areaId = `area-${this.props.desc.name}`;
-  }
-
-  componentDidMount() {
-    this.props.sendReadyVideoArea(this.areaId);
-  }
-
-  render() {
-    const { className, desc } = this.props;
-    return (
-      <div className={classNames(className, 'connected')}>
-        {loaded ? (
-          <video className="area" id={this.areaId} />
-        ) : (
-          <div className="area">
-            <LoadingIcon />
-          </div>
-        )}
-        <hr />
-      </div>
-    );
-  }
+function Connected({ className, desc }) {
+  return (
+    <div className={classNames(className, 'connected')}>
+      {(desc.url) ? (
+        <video
+          className="area"
+          src={desc.url}
+        />
+      ) : (
+        <div className="area">
+          <LoadingIcon />
+        </div>
+      )}
+      <hr />
+    </div>
+  );
 }
 
 Connected.propTypes = {

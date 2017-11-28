@@ -51,7 +51,10 @@ Client.defaultProps = {
 
 const mapStateToProps = state => ({
   client: state.conference.get(stateKeys.client),
-  users: state.conference.get(stateKeys.users).toObject(),
+  users: state.conference
+    .get(stateKeys.users)
+    .map(user => user.toObject())
+    .toObject(),
   connections: state.conference.get(stateKeys.connections).toArray(),
 });
 

@@ -23,7 +23,10 @@ function createRemoteStreamURL(stream) {
 }
 
 function setLocalStream(connecter) {
-  connecter.setMediaStream();
+  connecter.setMediaStream({
+    audio: true,
+    video: true,
+  });
 }
 
 function* handleRemoteStream(connecter) {

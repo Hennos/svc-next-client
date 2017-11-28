@@ -152,12 +152,12 @@ export default class P2PConnecter {
     });
   }
 
-  setMediaStream() {
+  setMediaStream(constraints) {
     if (this.connection === null) {
       throw new Error('P2PConnecter => setMediaStream(): connection should be created before calling method');
     }
 
-    navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+    navigator.mediaDevices.getUserMedia(constraints)
       .then((stream) => {
         this.connection.addStream(stream);
       })

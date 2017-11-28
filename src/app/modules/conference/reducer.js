@@ -1,3 +1,5 @@
+import Immutable from 'immutable';
+
 import { events, stateKeys } from './constants';
 import initialState from './state';
 
@@ -10,18 +12,17 @@ function handleAuthorizeDone(state) {
 }
 
 function handleSetUser(state, { peer: { id, data } }) {
-  const users = state.get(stateKeys.users).set(id, data);
-
-  return state.set(stateKeys.users, users);
+  const updatedUsers = state.get(stateKeys.users).set(id, data);
+  return state.set(stateKeys.users, updatedUsers);
 }
 
 function handleResetUser(state, { peer: id }) {
-  const users = state.get(stateKeys.users).delete(id);
+  const updatedUsers = state.get(stateKeys.users).delete(id);
   const updatedConnections = state
     .get(stateKeys.connections)
     .filterNot(connected => Object.is(connected, id));
   return state
-    .set(stateKeys.users, users)
+    .set(stateKeys.users, updatedUsers)
     .set(stateKeys.connections, updatedConnections);
 }
 

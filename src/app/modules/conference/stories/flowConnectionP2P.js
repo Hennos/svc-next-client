@@ -73,7 +73,7 @@ function handleP2PSignal(connecter, signal) {
 }
 
 function* manageMessageP2PConnection(connecter) {
-  while(true) {
+  while (true) {
     const { signal } = yield take(events.getP2PSignal);
     yield call(handleP2PSignal, connecter, signal);
   }

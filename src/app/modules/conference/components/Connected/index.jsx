@@ -15,6 +15,7 @@ function Connected({ className, desc }) {
       {(desc.url) ? (
         <video
           className="area"
+          autoPlay
           src={desc.url}
         />
       ) : (

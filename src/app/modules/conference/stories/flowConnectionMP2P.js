@@ -1,4 +1,4 @@
-import { put, take, call, fork } from 'redux-saga/effects';
+import { put, take, call } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 
 import { events } from '../constants';
@@ -42,8 +42,8 @@ function* handleRemoteStream(connecter) {
 export default function* flowConnectionMP2P({ connecter }) {
   const { connected } = yield take(events.connectP2PDone);
   yield put(setConnectedPeer(connected));
-  yield fork(handleRemoteStream, connecter);
   if (connecter.isInitiator) {
     yield call(setLocalStream, connecter);
   }
+  yield call(handleRemoteStream, connecter);
 }

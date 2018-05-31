@@ -15,7 +15,6 @@ export default class FragmentProducerReducer extends FragmentProducer {
       const workersMap = WorkersMap.create(workers);
       return (state = initialState, action) => {
         const { type } = action;
-        // const handleAction = workersMap.get('UP_COUNTER');
         const handleAction = workersMap.get(type);
         if (typeof handleAction === 'function') {
           return handleAction(state, action);
